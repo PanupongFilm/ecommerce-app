@@ -1,0 +1,21 @@
+# =======================
+# Ignore for client
+# =======================
+/client/node_modules/
+/client/dist/
+/client/.env
+/client/.env.*.local
+
+# =======================
+# Ignore for server
+# =======================
+/server/node_modules/
+/server/dist/
+/server/.env
+
+# =======================
+# Editor / System
+# =======================
+.DS_Store
+.vscode/
+*.log
