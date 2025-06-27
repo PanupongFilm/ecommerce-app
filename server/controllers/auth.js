@@ -15,11 +15,16 @@ const login = async (req, res) => {
         const refresh_Token = RefreshToken.generateRefreshToken();
         const now = new Date();
         const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        const userAgent = req.headers['user-agent'];
 
         await new RefreshToken({
             token: refresh_Token,
             userId: user._id,
-            expiresAt: expiresAt
+            expiresAt: expiresAt,
+            ipAddress: ipAddress,
+            userAgent: userAgent
+
         }).save();
 
 

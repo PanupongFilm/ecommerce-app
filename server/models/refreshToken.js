@@ -4,48 +4,50 @@ import crypto from 'crypto';
 
 const refreshTokenSchema = new Schema({
 
-    token: {type:String, required:true, unique: true},
-    userId: {type:Schema.Types.ObjectId, ref:"User"},
-    createAt:{type:Date,default: Date.now},
-    expiresAt:{type:Date,required: true}
+    token: { type: String, required: true, unique: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
+    createAt: { type: Date, default: Date.now },
+    expiresAt: { type: Date, required: true },
+    ipAddress: { type: String },
+    userAgent: { type: String }
 
 });
 
 
 // Create the Refresh Token
-refreshTokenSchema.statics.generateRefreshToken = function(){
+refreshTokenSchema.statics.generateRefreshToken = function () {
     return crypto.randomBytes(64).toString('hex');
 }
 
 // Hashing Token
-refreshTokenSchema.pre('save',async function(next){
-    try{
+refreshTokenSchema.pre('save', async function (next) {
+    try {
 
-        if(!this.isModified('token')) return next();
+        if (!this.isModified('token')) return next();
 
         const salt = await bcrypt.genSalt(Number(process.env.SALT_FACTOR));
-        this.token = await bcrypt.hash(this.token,salt);
+        this.token = await bcrypt.hash(this.token, salt);
         next();
 
-    }catch(error){
-        console.error("Error from /server/models/refreshToken.js at hashing token function: "+error);
+    } catch (error) {
+        console.error("Error from /server/models/refreshToken.js at hashing token function: " + error);
         throw error;
     }
 });
 
 // Compare Token
 
-refreshTokenSchema.methods.compareRefreshToken = async function(input){
-    try{
-        const isMatch = await bcrypt.compare(input,this.token);
+refreshTokenSchema.methods.compareRefreshToken = async function (input) {
+    try {
+        const isMatch = await bcrypt.compare(input, this.token);
         return isMatch;
-        
-    }catch(error){
-        console.error("Error from /server/models/refreshToken.js at comparing token function: "+error);
+
+    } catch (error) {
+        console.error("Error from /server/models/refreshToken.js at comparing token function: " + error);
         throw error;
     }
 }
 
-const RefreshToken = mongoose.model("RefreshToken",refreshTokenSchema);
+const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
 
 export default RefreshToken;
