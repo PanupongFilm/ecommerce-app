@@ -1,35 +1,69 @@
-import { User, validation } from "../models/user";
-import { refreshToken } from '../models/refreshToken';
-validation
+import { User, validation } from "../models/user.js";
+import RefreshToken from '../models/refreshToken.js';
 
-const login = (req,res) =>{
-    try{
-        
 
-    }catch(error){
-        console.error("Error from /server/controllers/auth.js at loginUser Controller: "+error);
-        res.status(500).json({message: "Internal Server Error"});
+const login = async (req, res) => {
+    try {
+        const user = await User.findOne({ userName: req.body.userName });
+        if (!user) return res.status(401).json({ message: "Incorrect username or password" });
+
+        const isMatch = await user.comparePassword(req.body.password);
+        if (!isMatch) return res.status(401).json({ message: "Incorrect username or password" });
+
+        const accessToken = user.generateAccessToken();
+
+        const refresh_Token = RefreshToken.generateRefreshToken();
+        const now = new Date();
+        const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+        await new RefreshToken({
+            token: refresh_Token,
+            userId: user._id,
+            expiresAt: expiresAt
+        }).save();
+
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 15 * 60 * 1000
+        });
+
+        res.cookie('refreshToken', refresh_Token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.status(200).json({ message: "Login successful" });
+
+
+    } catch (error) {
+        console.error("Error from /server/controllers/auth.js at loginUser Controller: " + error);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
-const logout = (req,res) =>{
-    try{
+const logout = (req, res) => {
+    try {
 
-    }catch(error){
-        console.error("Error from /server/controllers/auth.js at logoutUser Controller: "+error);
-        res.status(500).json({message: "Internal Server Error"});
+    } catch (error) {
+        console.error("Error from /server/controllers/auth.js at logoutUser Controller: " + error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
-const refreshToken = (req,res) =>{
-    try{
+const refreshToken = (req, res) => {
+    try {
 
-    }catch(error){
-        console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: "+error);
-        res.status(500).json({message: "Internal Server Error"});
+    } catch (error) {
+        console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
-export{
+export {
     login, logout, refreshToken
 }

@@ -19,7 +19,7 @@ const userSchema = new Schema({
 
 }, { timestamps: true });
 
-// Hashing Password
+// Hashing Password When Registering or Changing Password
 userSchema.pre('save', async function(next){
     try{
 
@@ -37,7 +37,7 @@ userSchema.pre('save', async function(next){
 });
 
 
-// Compare Password 
+// Compare Password When Login
 userSchema.methods.comparePassword = async function(input){
     try{
         const isMatch = await bcrypt.compare(input,this.password);
@@ -50,7 +50,7 @@ userSchema.methods.comparePassword = async function(input){
 }
 
 
-// Generate The Access Token
+// Generate The Access Token When User Login
 userSchema.methods.generateAccessToken = function(){
     try{
         const token = jwt.sign({

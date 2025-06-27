@@ -13,7 +13,7 @@ const refreshTokenSchema = new Schema({
 
 
 // Create the Refresh Token
-refreshTokenSchema.static.generateRefreshToken = function(){
+refreshTokenSchema.statics.generateRefreshToken = function(){
     return crypto.randomBytes(64).toString('hex');
 }
 
@@ -46,6 +46,6 @@ refreshTokenSchema.methods.compareRefreshToken = async function(input){
     }
 }
 
-const refreshToken = mongoose.model("RefreshToken",refreshTokenSchema);
+const RefreshToken = mongoose.model("RefreshToken",refreshTokenSchema);
 
-export default refreshToken;
+export default RefreshToken;

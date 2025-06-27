@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 //Router
 import registerRoute from './routes/user.js';
+import authRoute from './routes/auth.js';
 
 //Load environment variables
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(morgan('short'));
 
 // Routes Middleware
 app.use('/user', registerRoute);
+app.use('/user',authRoute);
 
 
 app.get('/',(req,res)=>{
