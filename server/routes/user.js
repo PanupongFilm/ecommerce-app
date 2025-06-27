@@ -1,12 +1,9 @@
 import express from 'express';
+import register from '../controllers/user.js';
 const router = express.Router();
 
 
-router.post('/login');
-
-router.post('logout');
-
-router.post('/refresh-Token');
+router.post('/register',register);
 
 
 export default router;

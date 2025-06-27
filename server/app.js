@@ -4,6 +4,9 @@ import cors from 'cors';
 import compression from 'compression';
 import morgan from 'morgan';
 
+//Router
+import registerRoute from './routes/user.js';
+
 //Load environment variables
 dotenv.config();
 const app = express();
@@ -14,10 +17,13 @@ app.use(cors());
 app.use(compression());
 app.use(morgan('short'));
 
-//Router
+// Routes Middleware
+app.use('/user', registerRoute);
 
 
-
+app.get('/',(req,res)=>{
+    res.send("Hello world");
+})
 
 
 
