@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import compression from 'compression';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 //Router
 import registerRoute from './routes/user.js';
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors());
 app.use(compression());
 app.use(morgan('short'));
+app.use(cookieParser());
 
 // Routes Middleware
 app.use('/user', registerRoute);

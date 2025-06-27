@@ -51,9 +51,29 @@ const login = async (req, res) => {
     }
 }
 
-const logout = (req, res) => {
+const logout = async (req, res) => {
     try {
 
+        const currentRefreshToken = req.cookies.refreshToken;
+        const userId = req.user.id;
+
+        if(currentRefreshToken){
+            const allToken = await RefreshToken.find({userId: userId});
+            for(const token of allToken){
+                const isMatch = await token.compareRefreshToken(currentRefreshToken);
+                if(isMatch){
+                    await RefreshToken.findByIdAndDelete(token._id);
+                    break;
+                }
+            }
+        }else{
+            await RefreshToken.deleteMany({userId: userId});
+        }
+        
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        res.status(200).json({message: "Logout successful"});
+     
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at logoutUser Controller: " + error);
         res.status(500).json({ message: "Internal Server Error" });
