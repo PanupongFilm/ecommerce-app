@@ -9,6 +9,7 @@ router.post('/login',login);
 
 router.post('/logout',authMiddleware,logout);
 
+router.post('/refresh-token',refreshToken);
 
 
 export default router;

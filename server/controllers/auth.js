@@ -42,7 +42,7 @@ const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        res.cookie('refreshTokenId',newRefreshToken._id.toString(),{
+        res.cookie('refreshTokenId', newRefreshToken._id.toString(), {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
@@ -64,24 +64,24 @@ const logout = async (req, res) => {
         const currentRefreshToken = req.cookies.refreshToken;
         const userId = req.user._id;
 
-        if(currentRefreshToken){
-            const allToken = await RefreshToken.find({userId: userId});
-            for(const token of allToken){
+        if (currentRefreshToken) {
+            const allToken = await RefreshToken.find({ userId: userId });
+            for (const token of allToken) {
                 const isMatch = await token.compareRefreshToken(currentRefreshToken);
-                if(isMatch){
+                if (isMatch) {
                     await RefreshToken.findByIdAndDelete(token._id);
                     break;
                 }
             }
-        }else{
-            await RefreshToken.deleteMany({userId: userId});
+        } else {
+            await RefreshToken.deleteMany({ userId: userId });
         }
-        
+
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
         res.clearCookie('refreshTokenId');
-        res.status(200).json({message: "Logout successful"});
-     
+        res.status(200).json({ message: "Logout successful" });
+
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at logoutUser Controller: " + error);
         res.status(500).json({ message: "Internal Server Error" });
@@ -91,8 +91,43 @@ const logout = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const currentRefreshToken_cookie = req.cookies.refreshToken;
-        const currentAccessToken_cookie_id = req.cookies.refreshTokenId;
-        
+        const currentAccessTokenId_cookie = req.cookies.refreshTokenId;
+
+        if (currentRefreshToken_cookie && currentAccessTokenId_cookie) {
+
+            const currentRefreshToken_Database = await RefreshToken.findById(currentAccessTokenId_cookie);
+            if (!currentRefreshToken_Database) {
+                res.clearCookie('accessToken');
+                res.clearCookie('refreshToken');
+                res.clearCookie('refreshTokenId');
+                return res.status(401).send({ message: "Refresh token not found or invalid" });
+            }
+
+            const isMatch = await currentRefreshToken_Database.compareRefreshToken(currentRefreshToken_cookie);
+            if (!isMatch) {
+                res.clearCookie('accessToken');
+                res.clearCookie('refreshToken');
+                res.clearCookie('refreshTokenId');
+                return res.status(401).send({ message: "Refresh token not found or invalid" });
+            }
+
+            const user = await User.findById(currentRefreshToken_Database.userId);
+            const accessToken = user.generateAccessToken();
+
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 15 * 60 * 1000
+            });
+
+            return res.status(200).json({ message: "Create access token succuessful" });
+
+
+        } else {
+            return res.status(401).send({ message: "Refresh token not found or invalid" });
+        }
+
 
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
