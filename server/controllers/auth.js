@@ -108,6 +108,9 @@ const refreshToken = async (req, res) => {
                 res.clearCookie('accessToken');
                 res.clearCookie('refreshToken');
                 res.clearCookie('refreshTokenId');
+    
+                await RefreshToken.findOneAndDelete({_id: currentAccessTokenId_cookie});
+
                 return res.status(401).send({ message: "Refresh token not found or invalid" });
             }
 
