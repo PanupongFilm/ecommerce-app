@@ -55,7 +55,7 @@ const logout = async (req, res) => {
     try {
 
         const currentRefreshToken = req.cookies.refreshToken;
-        const userId = req.user.id;
+        const userId = req.user._id;
 
         if(currentRefreshToken){
             const allToken = await RefreshToken.find({userId: userId});
@@ -82,7 +82,7 @@ const logout = async (req, res) => {
 
 const refreshToken = (req, res) => {
     try {
-
+        
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
         res.status(500).json({ message: "Internal Server Error" });
