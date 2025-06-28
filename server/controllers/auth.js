@@ -79,6 +79,7 @@ const logout = async (req, res) => {
         
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
+        res.clearCookie('refreshTokenId');
         res.status(200).json({message: "Logout successful"});
      
     } catch (error) {
@@ -89,7 +90,8 @@ const logout = async (req, res) => {
 
 const refreshToken = async (req, res) => {
     try {
-
+        const currentRefreshToken_cookie = req.cookies.refreshToken;
+        const currentAccessToken_cookie_id = req.cookies.refreshTokenId;
         
 
     } catch (error) {
