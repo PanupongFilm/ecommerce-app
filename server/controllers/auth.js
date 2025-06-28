@@ -18,7 +18,7 @@ const login = async (req, res) => {
         const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         const userAgent = req.headers['user-agent'];
 
-        await new RefreshToken({
+        const newRefreshToken = await new RefreshToken({
             token: refresh_Token,
             userId: user._id,
             expiresAt: expiresAt,
@@ -41,6 +41,13 @@ const login = async (req, res) => {
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+
+        res.cookie('refreshTokenId',newRefreshToken._id.toString(),{
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        })
 
         return res.status(200).json({ message: "Login successful" });
 
@@ -80,9 +87,11 @@ const logout = async (req, res) => {
     }
 }
 
-const refreshToken = (req, res) => {
+const refreshToken = async (req, res) => {
     try {
+
         
+
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
         res.status(500).json({ message: "Internal Server Error" });
