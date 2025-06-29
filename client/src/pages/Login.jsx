@@ -78,7 +78,7 @@ const Login = () => {
                             <button
                                 type='button'
                                 onClick={() => { setShowPassword(!showPassword) }}
-                                className='absolute right-4 bottom-3 text-sm text-gray-100'
+                                className='absolute right-4 bottom-3 text-sm text-gray-100 cursor-pointer'
                             >{showPassword ? "hide" : "show"}</button>
 
                             {errors.password && (<p className='text-red-500 ml-2 mt-1 text-sm absolute'>{errors.password.message}</p>)}
@@ -88,16 +88,16 @@ const Login = () => {
                                     
                         <button type='submit'
                             disabled={isSubmitting}
-                            className='bg-white rounded-3xl w-full mt-4 py-2 font-semibold text-lg text-gray-800'
+                            className='bg-white rounded-3xl w-full mt-4 py-2 font-semibold text-lg text-gray-800 cursor-pointer'
                         >{isSubmitting?"Loading...":"Login"}</button>
 
                         <div className='mb-3 relative'>
 
-                            <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-sm">
+                            <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-sm cursor-pointer hover:text-blue-400">
                                 Forget password?
                             </Link>
 
-                            <Link to="/auth/register" className="text-gray-200 mt-3 absolute right-3 text-sm">
+                            <Link to="/auth/register" className="text-gray-200 mt-3 absolute right-3 text-sm cursor-pointer hover:text-blue-400">
                                 Sign Up
                             </Link>
                         </div>
