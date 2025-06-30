@@ -84,7 +84,7 @@ const logout = async (req, res) => {
 
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at logoutUser Controller: " + error);
-        res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
@@ -134,10 +134,21 @@ const refreshToken = async (req, res) => {
 
     } catch (error) {
         console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
-        res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
+const check = (req,res)=>{
+    try{
+        return res.status(200).send(req.user);
+        
+    }catch(error){
+        console.error("Error from /server/controllers/auth.js at check Controller: " + error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+
 export {
-    login, logout, refreshToken
+    login, logout, refreshToken, check
 }
