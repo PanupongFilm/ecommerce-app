@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 const userSchema = new Schema({
 
     userName: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: function() { return !this.googleId; } },
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     cart: [
@@ -16,6 +16,9 @@ const userSchema = new Schema({
             quantity: { type: Number, default: 1 }
         }
     ],
+
+    googleId: { type: String, unique: true, sparse: true },
+
 
 }, { timestamps: true });
 
