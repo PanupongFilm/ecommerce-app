@@ -6,12 +6,12 @@ const GoogleLoginButton = () => {
 
   const login = useGoogleLogin({
     onSuccess: async credentialResponse => {
-      
+
       try {
-        console.log(credentialResponse)
+
         const token = credentialResponse.access_token;
         const res = await axios.post('http://localhost:4001/user/google-auth', { token });
-        alert(res.data.message);  
+        alert(res.data.message);
 
       } catch (error) {
         console.error(error);
@@ -23,7 +23,7 @@ const GoogleLoginButton = () => {
     },
   });
 
- 
+
   const handleGoogleLogin = () => {
     login();
   };
