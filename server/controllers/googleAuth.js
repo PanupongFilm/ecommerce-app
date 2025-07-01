@@ -1,26 +1,24 @@
-import { OAuth2Client } from 'google-auth-library';
+import axios from 'axios';
 import { User } from '../models/user.js';
 import RefreshToken from '../models/refreshToken.js';
-import { makeCookie , clearCookie } from "../utils/setCookie.js";
+import { makeCookie, clearCookie } from "../utils/setCookie.js";
 
 
 const googleAuth = async (req, res) => {
     try {
-        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-        const tokenFromFrontend = req.body.token;
+        const accessToken = req.body.token;
 
-        if (!tokenFromFrontend) {
-            return res.status(400).json({ message: 'Token is required' });
-        }
+        if (!accessToken) return res.status(400).json({ message: "Token is required" });
 
-        const data = await client.verifyIdToken({
-
-            idToken: tokenFromFrontend,
-            audience: process.env.GOOGLE_CLIENT_ID
+        const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
         });
 
-        const payload = data.getPayload();
+        const payload = response.data;
+
 
         const userValidation = await User.findOne({ email: payload.email });
 
@@ -48,7 +46,7 @@ const googleAuth = async (req, res) => {
             }).save();
 
 
-            makeCookie(res,accessToken,refreshToken,newRefreshToken._id.toString());
+            makeCookie(res, accessToken, refreshToken, newRefreshToken._id.toString());
 
             return res.status(200).json({ message: "Create user and login successful" });
         }
@@ -71,7 +69,7 @@ const googleAuth = async (req, res) => {
                 userAgent: userAgent
             }).save();
 
-            makeCookie(res,accessToken,refreshToken,newRefreshToken._id.toString());
+            makeCookie(res, accessToken, refreshToken, newRefreshToken._id.toString());
 
             return res.status(200).json({ message: "Login successful" });
 

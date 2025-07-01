@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
+import GoogleLoginButton from '../components/googleLoginButton';
 
 
 const Login = () => {
@@ -92,28 +92,21 @@ const Login = () => {
                             className='bg-white rounded-3xl w-full mt-4 py-1.5 font-bold text-sm text-gray-800 cursor-pointer'
                         >{isSubmitting ? "Loading..." : "Login"}</button>
 
-                        <div className='mt-5'>
-                        <button className="flex items-center justify-center gap-3 bg-[#f2f2f2] text-[#1f1f1f] text-sm font-bold rounded-3xl w-full py-1.5 shadow hover:shadow-md cursor-pointer">
-                            <FcGoogle className="w-5 h-5" />
-                            <span>Sign in with Google</span>
-                        </button>
-                        </div>
-
-
-                        <div className='mb-3 relative'>
-
-                            <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-xs cursor-pointer hover:text-blue-400">
-                                Forget password?
-                            </Link>
-
-                            <Link to="/auth/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
-                                Sign Up
-                            </Link>
-                        </div>
-
-
-
                     </form>
+
+                    <GoogleLoginButton />
+
+                    <div className='mb-3 relative'>
+
+                        <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-xs cursor-pointer hover:text-blue-400">
+                            Forget password?
+                        </Link>
+
+                        <Link to="/auth/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
+                            Sign Up
+                        </Link>
+                    </div>
+
                 </div>
             </main>
 
