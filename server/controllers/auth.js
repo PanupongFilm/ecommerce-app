@@ -1,5 +1,6 @@
 import { User, validation } from "../models/user.js";
 import RefreshToken from '../models/refreshToken.js';
+import { makeCookie , clearCookie } from "../utils/setCookie.js";
 
 
 const login = async (req, res) => {
@@ -27,27 +28,7 @@ const login = async (req, res) => {
 
         }).save();
 
-
-        res.cookie('accessToken', accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 15 * 60 * 1000
-        });
-
-        res.cookie('refreshToken', refresh_Token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        });
-
-        res.cookie('refreshTokenId', newRefreshToken._id.toString(), {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
+        makeCookie(res,accessToken,refresh_Token,newRefreshToken._id.toString());
 
         return res.status(200).json({ message: "Login successful" });
 
@@ -62,24 +43,20 @@ const logout = async (req, res) => {
     try {
 
         const currentRefreshToken = req.cookies.refreshToken;
-        const userId = req.user._id;
-
-        if (currentRefreshToken) {
-            const allToken = await RefreshToken.find({ userId: userId });
-            for (const token of allToken) {
-                const isMatch = await token.compareRefreshToken(currentRefreshToken);
-                if (isMatch) {
-                    await RefreshToken.findByIdAndDelete(token._id);
-                    break;
-                }
-            }
-        } else {
-            await RefreshToken.deleteMany({ userId: userId });
+        const currentRefreshTokenId = req.cookies.refreshTokenId
+        const user = req.user
+        
+        if(currentRefreshToken && currentRefreshTokenId){
+    
+            await RefreshToken.findOneAndDelete({_id: currentRefreshTokenId});
         }
 
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
-        res.clearCookie('refreshTokenId');
+        else if((!currentRefreshToken && currentRefreshTokenId)||(currentRefreshToken && !currentRefreshTokenId)){
+            
+            await RefreshToken.deleteMany({userId: req.user._id});
+        }
+
+        clearCookie(res)
         res.status(200).json({ message: "Logout successful" });
 
     } catch (error) {
@@ -96,20 +73,16 @@ const refreshToken = async (req, res) => {
         if (currentRefreshToken_cookie && currentAccessTokenId_cookie) {
 
             const currentRefreshToken_Database = await RefreshToken.findById(currentAccessTokenId_cookie);
+
             if (!currentRefreshToken_Database) {
-                res.clearCookie('accessToken');
-                res.clearCookie('refreshToken');
-                res.clearCookie('refreshTokenId');
+                clearCookie(res)
                 return res.status(401).send({ message: "Refresh token not found or invalid" });
             }
 
             const isMatch = await currentRefreshToken_Database.compareRefreshToken(currentRefreshToken_cookie);
             if (!isMatch) {
-                res.clearCookie('accessToken');
-                res.clearCookie('refreshToken');
-                res.clearCookie('refreshTokenId');
-    
-                await RefreshToken.findOneAndDelete({_id: currentAccessTokenId_cookie});
+                clearCookie(res);
+                await RefreshToken.findOneAndDelete({ _id: currentAccessTokenId_cookie });
 
                 return res.status(401).send({ message: "Refresh token not found or invalid" });
             }
@@ -138,15 +111,16 @@ const refreshToken = async (req, res) => {
     }
 }
 
-const check = (req,res)=>{
-    try{
+const check = (req, res) => {
+    try {
         return res.status(200).send(req.user);
-        
-    }catch(error){
+
+    } catch (error) {
         console.error("Error from /server/controllers/auth.js at check Controller: " + error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
 
 
 export {

@@ -3,10 +3,12 @@ import bcrypt from 'bcrypt';
 import Joi from 'joi'
 import passwordComplexity from 'joi-password-complexity';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const userSchema = new Schema({
 
-    userName: { type: String, required: true, unique: true },
+    userName: { type: String, required: function() { return !this.googleId; }, unique: true,
+     default: function(){if(this.googleId && !this.userName){return crypto.randomBytes(16).toString('hex')}}},
     password: { type: String, required: function() { return !this.googleId; } },
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
