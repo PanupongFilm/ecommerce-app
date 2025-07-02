@@ -6,7 +6,7 @@ const register = async (req,res)=>{
         if(error) return res.status(400).json({message: error.details[0].message});
 
         const userNameCheck = await User.findOne({userName: req.body.userName});
-        if(userNameCheck) return res.status(409).json({message: "Username is already taken"});
+        if(userNameCheck) return res.status(409).json({message: "User name is already taken"});
 
         const userEmailcheck = await User.findOne({email: req.body.email});
         if(userEmailcheck) return res.status(409).json({message: "User with given email already exists"});

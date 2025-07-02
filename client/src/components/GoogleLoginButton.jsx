@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
+
 
 const GoogleLoginButton = () => {
+
+  const navigate = useNavigate();
 
   const login = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
@@ -11,8 +15,8 @@ const GoogleLoginButton = () => {
 
         const token = credentialResponse.access_token;
         const res = await axios.post('http://localhost:4001/user/google-auth', { token });
-        alert(res.data.message);
-
+        navigate('/');
+        
       } catch (error) {
         console.error(error);
         alert('Google login failed');

@@ -79,7 +79,7 @@ const Login = () => {
                             <button
                                 type='button'
                                 onClick={() => { setShowPassword(!showPassword) }}
-                                className='absolute right-4 bottom-3 text-xs text-gray-100 cursor-pointer'
+                                className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
                             >{showPassword ? "hide" : "show"}</button>
 
                             {errors.password && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.password.message}</p>)}
