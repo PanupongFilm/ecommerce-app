@@ -2,6 +2,8 @@ import axios from 'axios';
 import { User } from '../models/user.js';
 import RefreshToken from '../models/refreshToken.js';
 import { makeCookie, clearCookie } from "../utils/setCookie.js";
+import makeRefreshToken from '../utils/makeRefreshToken.js';
+
 
 
 const googleAuth = async (req, res) => {
@@ -31,22 +33,10 @@ const googleAuth = async (req, res) => {
 
             const accessToken = user.generateAccessToken();
 
-            const refreshToken = RefreshToken.generateRefreshToken();
-            const now = new Date();
-            const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-            const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-            const userAgent = req.headers['user-agent'];
+            const refreshToken = makeRefreshToken(req,user._id);
+            const newRefreshToken = await new RefreshToken(refreshToken).save();
 
-            const newRefreshToken = await new RefreshToken({
-                token: refreshToken,
-                userId: user._id,
-                expiresAt: expiresAt,
-                ipAddress: ipAddress,
-                userAgent: userAgent
-            }).save();
-
-
-            makeCookie(res, accessToken, refreshToken, newRefreshToken._id.toString());
+            makeCookie(res, accessToken, refreshToken.token, newRefreshToken._id.toString());
 
             return res.status(200).json({ message: "Create user and login successful" });
         }
@@ -55,21 +45,10 @@ const googleAuth = async (req, res) => {
 
             const accessToken = userValidation.generateAccessToken();
 
-            const refreshToken = RefreshToken.generateRefreshToken();
-            const now = new Date();
-            const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-            const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-            const userAgent = req.headers['user-agent'];
+            const refreshToken = makeRefreshToken(req,userValidation._id);
+            const newRefreshToken = await new RefreshToken(refreshToken).save();
 
-            const newRefreshToken = await new RefreshToken({
-                token: refreshToken,
-                userId: userValidation._id,
-                expiresAt: expiresAt,
-                ipAddress: ipAddress,
-                userAgent: userAgent
-            }).save();
-
-            makeCookie(res, accessToken, refreshToken, newRefreshToken._id.toString());
+            makeCookie(res, accessToken, refreshToken.token, newRefreshToken._id.toString());
 
             return res.status(200).json({ message: "Login successful" });
 
