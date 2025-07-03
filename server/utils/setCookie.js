@@ -1,11 +1,11 @@
 const makeCookie = (res, accessToken, refresh_Token = null, newRefreshTokenId = null) => {
-    try {
+    try { 
 
         if (accessToken) {
             res.cookie('accessToken', accessToken, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 15 * 60 * 1000
             });
         }
@@ -13,15 +13,15 @@ const makeCookie = (res, accessToken, refresh_Token = null, newRefreshTokenId = 
         if (refresh_Token && newRefreshTokenId) {
             res.cookie('refreshToken', refresh_Token, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
 
             res.cookie('refreshTokenId', newRefreshTokenId, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
         }

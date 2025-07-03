@@ -36,7 +36,7 @@ const googleAuth = async (req, res) => {
             const refreshToken = makeRefreshToken(req,user._id);
             const newRefreshToken = await new RefreshToken(refreshToken).save();
 
-            makeCookie(res, accessToken, refreshToken.token, newRefreshToken._id.toString());
+            makeCookie(res,accessToken,refreshToken.token,newRefreshToken._id.toString());
 
             return res.status(201).json({ message: "Create user and login successful" });
         }

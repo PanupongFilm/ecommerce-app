@@ -102,7 +102,7 @@ const Login = () => {
                             Forget password?
                         </Link>
 
-                        <Link to="/auth/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
+                        <Link to="/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
                             Sign Up
                         </Link>
                     </div>

@@ -138,7 +138,7 @@ const Login = () => {
                         <span className="text-gray-200 mt-3 text-xs">
                             Already have an account?{' '}
                             <Link
-                                to="/auth/login"
+                                to="/login"
                                 className="text-blue-400 cursor-pointer hover:text-blue-600 ml-1"
                             >
                                 Login

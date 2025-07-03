@@ -14,8 +14,13 @@ const GoogleLoginButton = () => {
       try {
 
         const token = credentialResponse.access_token;
-        const res = await axios.post('http://localhost:4001/user/google-auth', { token });
-        navigate('/');
+        const res = await axios.post('http://localhost:4001/user/google-auth', { token },{ withCredentials: true });
+        if(res.status === 201){
+        navigate('/account/setup');
+        }
+        else{
+          navigate('/')
+        }
         
       } catch (error) {
         console.error(error);

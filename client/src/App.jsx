@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import AccountSetup from './pages/AccountSetup.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google'; 
 import './app.css';
 
@@ -13,8 +14,9 @@ function App() {
     <GoogleOAuthProvider clientId={clientId}>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/auth/login' element={<Login />} />
-        <Route path='/auth/register' element={<Register/>} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/account/setup' element={<AccountSetup/>}/>
       </Routes>
     </GoogleOAuthProvider>
   );
