@@ -38,7 +38,7 @@ const googleAuth = async (req, res) => {
 
             makeCookie(res, accessToken, refreshToken.token, newRefreshToken._id.toString());
 
-            return res.status(200).json({ message: "Create user and login successful" });
+            return res.status(201).json({ message: "Create user and login successful" });
         }
 
         else {
