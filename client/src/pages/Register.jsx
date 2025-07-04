@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
 
-const Login = () => {
+const Register = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [userInvalid, setUserInvalid] = useState(false);
@@ -158,4 +158,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
