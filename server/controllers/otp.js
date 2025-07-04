@@ -2,6 +2,10 @@ import Otp from "../models/otp.js";
 import nodemailer from 'nodemailer';
 import { User } from "../models/user.js";
 import emailTemplate from "../utils/emailTemplate.js";
+import makeRefreshToken from "../utils/makeRefreshToken.js";
+import { makeCookie } from "../utils/setCookie.js";
+import RefreshToken from "../models/refreshToken.js";
+
 
 const sendOTP = async (req, res) => {
     try {
@@ -63,12 +67,19 @@ const verifyOTP = async (req, res) => {
             return res.status(400).json({message: "Missing required fields!"});
 
         await Otp.findOneAndDelete({_id: isValidOTP._id});
-        await new User({
+
+        const user = await new User({
             userName: req.body.userName,
             password: req.body.password,
             email: req.body.email
         }).save();
+
+        const accessToken = user.generateAccessToken();
         
+        const refreshToken = makeRefreshToken(req,user._id);
+        const newRefreshToken = await new RefreshToken(refreshToken).save();
+
+        makeCookie(res,accessToken,refreshToken,newRefreshToken._id.toString());        
         return res.status(201).json({message: "OTP verified and account created successfully"});
     
     } catch (error) {

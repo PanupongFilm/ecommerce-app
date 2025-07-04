@@ -1,4 +1,4 @@
-const makeCookie = (res, accessToken, refresh_Token = null, newRefreshTokenId = null) => {
+const makeCookie = (res, accessToken, refreshToken = null, newRefreshTokenId = null) => {
     try { 
 
         if (accessToken) {
@@ -10,8 +10,8 @@ const makeCookie = (res, accessToken, refresh_Token = null, newRefreshTokenId = 
             });
         }
 
-        if (refresh_Token && newRefreshTokenId) {
-            res.cookie('refreshToken', refresh_Token, {
+        if (refreshToken && newRefreshTokenId) {
+            res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: false,
                 sameSite: 'lax',
