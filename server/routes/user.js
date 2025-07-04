@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/register',register);
 
-router.post('/account-setup',authMiddleware,completeAccountSetup);
+router.patch('/account-setup',authMiddleware,completeAccountSetup);
 
 
 export default router;

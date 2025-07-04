@@ -14,7 +14,7 @@ const AccountSetup = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:4001/user/account-setup', data, { withCredentials: true });
+            const response = await axios.patch('http://localhost:4001/user/account-setup', data, { withCredentials: true });
             if (response.status === 200) {
                 console.log(response.data.message);
                 navigate('/');
