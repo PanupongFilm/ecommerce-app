@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 //Router
 import registerRoute from './routes/user.js';
 import authRoute from './routes/auth.js';
+import optRoute from './routes/otp.js';
 
 //Load environment variables
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // Routes Middleware
 app.use('/user', registerRoute);
 app.use('/user',authRoute);
+app.use('/otp',optRoute);
 
 
 app.get('/',(req,res)=>{

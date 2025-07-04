@@ -1,8 +1,4 @@
-import RefreshToken from '../models/refreshToken.js';
 import { User, validation } from '../models/user.js';
-import makeRefreshToken from '../utils/makeRefreshToken.js';
-import { makeCookie } from '../utils/setCookie.js';
-
 
 const register = async (req, res) => {
     try {

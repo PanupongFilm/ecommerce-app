@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import crypto from 'crypto';
-import { required } from 'joi';
+
 
 
 const otpSchema = new Schema({
@@ -9,7 +9,7 @@ const otpSchema = new Schema({
     otp:{type:String, required: true},
     purpose:{type:String, required:true, enum:['reset-password','verify-email']},
 
-    expiresAt:{type:Date,required: true, default: ()=>{
+    expiresAt:{type:Date, default: ()=>{
         return new Date(Date.now()+ 1 * 60 * 1000);
     }}
 
@@ -20,10 +20,10 @@ otpSchema.index({ email: 1, purpose: 1 }, { unique: true });
 
 otpSchema.statics.generateOTP = function(){
     try{
-        return crypto.randomInt(100000,1000000);
+        return crypto.randomInt(100000,1000000).toString();
 
     }catch(error){
-        console.error("Error from /server/models/opt.js at generateOTP static method: " + error);
+        console.error("Error from /server/models/otp.js at generateOTP static method: " + error);
         throw error;
     }
 }

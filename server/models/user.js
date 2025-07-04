@@ -7,7 +7,7 @@ import crypto from 'crypto';
 
 const userSchema = new Schema({
 
-    userName: { type: String, required: function() { return !this.googleId; }, unique: true, trim: เtrue,
+    userName: { type: String, required: function() { return !this.googleId; }, unique: true, trim: true,
      default: function(){if(this.googleId && !this.userName){return crypto.randomBytes(16).toString('hex')}}},
     password: { type: String, required: function() { return !this.googleId; } },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
