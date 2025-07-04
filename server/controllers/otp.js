@@ -55,7 +55,7 @@ const verifyOTP = async (req, res) => {
         const purpose = isValidOTP.purpose;
 
         if(purpose === 'reset-password'){
-            
+            await Otp.findOneAndDelete({_id: isValidOTP._id});
             return res.status(200).json({message: "Verify successfully"});
         }
 
