@@ -15,16 +15,7 @@ const register = async (req, res) => {
         const userEmailcheck = await User.findOne({ email: req.body.email });
         if (userEmailcheck) return res.status(409).json({ message: "User with given email already exists" });
 
-        const user = await new User(req.body).save();
-
-        const accessToken = user.generateAccessToken();
-
-        const refreshToken = makeRefreshToken(req, user._id);
-        const newRefreshToken = await new RefreshToken(refreshToken).save();
-
-        makeCookie(res, accessToken, refreshToken.token, newRefreshToken._id.toString());
-
-        return res.status(201).json({ message: "User created successfully" });
+        return res.status(202).json({ message: "OTP sent to email. Please verify to complete registration." });
 
     } catch (error) {
         console.error("Error from /server/controllers/user.js at registerUser controller: " + error);
