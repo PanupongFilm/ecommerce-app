@@ -21,7 +21,7 @@ const AccountSetup = () => {
             const response = await axios.post('http://localhost:4001/otp/verifying',data,{withCredentials: true});
 
             if(response.status === 200){
-                navigate('/set-password');
+                navigate('/reset-password');
             }
             else if(response.status === 201){
                 navigate('/');

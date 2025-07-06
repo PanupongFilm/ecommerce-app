@@ -17,16 +17,13 @@ const Register = () => {
     const onSubmit = async (data) => {
         try {
             const response = await axios.post('http://localhost:4001/user/register', data, { withCredentials: true });
-            console.log(response.data.message);
-            
             if (response.status === 202) {
                 const purpose = 'verify-email';
                 const payload = {...data, purpose};
 
                 const newResponse = await axios.post('http://localhost:4001/otp/sending', payload, { withCredentials: true });
-                console.log(newResponse.data.message);
                 if (newResponse.status === 201)
-                    navigate('/verifying',{state: payload.email});
+                    navigate('/verifying', { state: { email: payload.email } });
             }
         } catch (error) {
             setErrorMessage(error.response.data.message);

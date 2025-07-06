@@ -22,7 +22,7 @@ const sendOTP = async (req, res) => {
         }
 
         const otp = generateOTP();
-        const payload ={
+        const payload = {
             otp: otp,
             email: req.body.email,
             userName: req.body.userName,
@@ -30,8 +30,8 @@ const sendOTP = async (req, res) => {
             purpose: req.body.purpose
         }
 
-        const otpToken = jwt.sign(payload,process.env.TOKEN_SECRET,{expiresIn: '1m'});
-        
+        const otpToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '1m' });
+
 
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -50,12 +50,12 @@ const sendOTP = async (req, res) => {
 
         await transporter.sendMail(mailOption);
 
-        res.cookie('otpToken',otpToken,{
-                httpOnly: true,
-                secure: false,
-                sameSite: 'lax',
-                maxAge: 60 * 1000
-            });
+        res.cookie('otpToken', otpToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            maxAge: 60 * 1000
+        });
 
         return res.status(201).json({ message: "Send OTP successfully" });
 
@@ -68,16 +68,28 @@ const sendOTP = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
     try {
-        if (!req.body.otp) return res.status(400).json({ message: "IOTP is required" });
+        if (!req.body.otp) return res.status(400).json({ message: "OTP is required" });
 
         if (!req.cookies.otpToken) return res.status(400).json({ message: "OTP token not found" });
 
-        const payload = jwt.verify(req.cookies.otpToken,process.env.TOKEN_SECRET);
+        const payload = jwt.verify(req.cookies.otpToken, process.env.TOKEN_SECRET);
 
-        if(req.body.otp !== payload.otp) return res.status(401).json({ message: "Invalid or expired OTP" });
+        if (req.body.otp !== payload.otp) return res.status(401).json({ message: "Invalid or expired OTP" });
         res.clearCookie('otpToken');
 
         if (payload.purpose === 'reset-password') {
+
+            const resetPasswordToken = jwt.sign({
+                email: payload.email
+            }, process.env.TOKEN_SECRET, { expiresIn: "5m" });
+
+            res.cookie('resetPasswordToken',resetPasswordToken,{
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
+                maxAge: 5*60*1000
+            });
+
             return res.status(200).json({ message: "Verify successfully" });
         }
 

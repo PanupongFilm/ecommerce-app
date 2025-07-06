@@ -81,7 +81,7 @@ const validation = (data) =>{
 
     try{
         const schema = Joi.object({
-            userName: Joi.string().required().label("User name"),
+            userName: Joi.string().label("User name"),
             email: Joi.string().email().label("Email"),
             password: passwordComplexity({
                 min: 8,

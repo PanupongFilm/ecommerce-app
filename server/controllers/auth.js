@@ -105,8 +105,38 @@ const check = (req, res) => {
     }
 }
 
+const forgotPassword = async (req,res)=>{
+    try{
+        const user = await User.findOne({email: req.body.email});
+        if(!user) return res.status(404).json({message: "User not found"});
 
+        return res.status(202).json({ message: "Email is valid" });
+
+    }catch(error){
+        console.error("Error from /server/controllers/auth.js at forgotPassword Controller: " + error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+const resetPassword = async (req,res)=>{
+    try{
+        const { error } = validation(req.body);
+        if (error) return res.status(400).json({ message: error.details[0].message });
+
+        const user = await User.findOne({email: req.user.email});
+        if(!user) return res.status(404).json({message:"User not found"});
+
+        user.password = req.body.password;
+        await user.save();
+
+        return res.status(200).json({message: "Password has been reset successfully"});
+    }
+    catch(error){
+        console.error("Error from /server/controllers/auth.js at resetPassword Controller: " + error);
+        return res.status(500).json({ message: "Internal Server Error" });     
+    }
+}
 
 export {
-    login, logout, refreshToken, check
+    login, logout, refreshToken, check, forgotPassword, resetPassword
 }
