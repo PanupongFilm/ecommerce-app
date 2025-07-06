@@ -11,15 +11,22 @@ const Register = () => {
     const [userInvalid, setUserInvalid] = useState(false);
     const navigate = useNavigate();
 
-    const [errorMessage,setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const onSubmit = async (data) => {
         try {
             const response = await axios.post('http://localhost:4001/user/register', data, { withCredentials: true });
-            if (response.status === 201) {
-                console.log(response.data.message);
-                navigate('/');
+            console.log(response.data.message);
+            
+            if (response.status === 202) {
+                const purpose = 'verify-email';
+                const payload = {...data, purpose};
+
+                const newResponse = await axios.post('http://localhost:4001/otp/sending', payload, { withCredentials: true });
+                console.log(newResponse.data.message);
+                if (newResponse.status === 201)
+                    navigate('/verifying',{state: payload.email});
             }
         } catch (error) {
             setErrorMessage(error.response.data.message);
@@ -74,7 +81,7 @@ const Register = () => {
 
                                 className={`w-full border rounded-3xl px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
                                  caret-white text-white 
-                                ${errors.userName ? "border-red-500" : "border-gray-100"}
+                                ${errors.email ? "border-red-500" : "border-gray-100"}
                                 ${userInvalid ? "border-red-500" : "border-gray-100"} `}
 
                                 placeholder='Enter your email'
@@ -90,18 +97,18 @@ const Register = () => {
                             <label className="block mb-2 ml-3 font-semibold text-white text-sm">Password</label>
                             <input
                                 type={showPassword ? "text" : "password"}
-                                {...register('password', { 
+                                {...register('password', {
 
-                                    required: "Please enter your password", 
-                                    minLength:{
+                                    required: "Please enter your password",
+                                    minLength: {
                                         value: 8,
                                         message: "Password must be at least 8 characters"
                                     },
-                                    maxLength:{
+                                    maxLength: {
                                         value: 32,
                                         message: "Password must not exceed 32 characters"
                                     },
-                                    pattern:{
+                                    pattern: {
                                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~]).{8,32}$/,
                                         message: "Must include uppercase, lowercase, number & symbol."
                                     }

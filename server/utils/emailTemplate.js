@@ -1,4 +1,4 @@
-const emailTemplate = (userName, otp , purpose) =>{
+const emailTemplate = (otp , purpose) =>{
     const html = `
     <div
         style="background-color: #576da2; padding: 30px; border-radius: 20px; max-width: 470px; margin: auto; font-family: Arial, sans-serif; color: #ffffff !important;">
@@ -6,7 +6,6 @@ const emailTemplate = (userName, otp , purpose) =>{
             style="text-align: center; font-size: 27px; margin-bottom: 20px; margin-top: -13px; color: #ffffff !important;">
             🔐 ${purpose === 'verify-email'?'Verify Your Email':'Reset Your Password'}
         </h2>
-        <p style="font-size: 17px; color: #ffffff !important;">Hello ${userName || 'User'},</p>
         <p style="font-size: 17px; color: #ffffff !important;">Please use the OTP below to ${purpose ==='verify-email'?'verify your email address':'reset your password'}:
         </p>
 
