@@ -14,7 +14,7 @@ const AccountSetup = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const info = location.state || {};
-6
+
 
     const onSubmit = async (data) => {
         try {
