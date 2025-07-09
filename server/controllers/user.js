@@ -1,4 +1,5 @@
 import { User, validation } from '../models/user.js';
+import jwt from 'jsonwebtoken';
 
 const register = async (req, res) => {
     try {
@@ -11,6 +12,21 @@ const register = async (req, res) => {
         const userEmailcheck = await User.findOne({ email: req.body.email });
         if (userEmailcheck) return res.status(409).json({ message: "User with given email already exists" });
 
+        const payload = {
+            userName: req.body.userName,
+            password: req.body.password,
+            email: req.body.email,
+            purpose: "verify-email"
+        }
+
+        const dataToken = jwt.sign(payload,process.env.TOKEN_SECRET,{expiresIn:"4m"});
+        res.cookie('dataToken',dataToken,{
+            httpOnly: true,
+            secure: false,
+            samesite: 'lax',
+            maxAge: 4 * 60 * 1000
+        })
+
         return res.status(202).json({ message: "OTP sent to email. Please verify to complete registration." });
 
     } catch (error) {
@@ -21,9 +37,6 @@ const register = async (req, res) => {
 
 const completeAccountSetup = async (req, res) => {
     try {
-    
-        console.log("Data: " + req.user);
-
         const { error } = validation(req.body);
         if (error) return res.status(400).json({ message: error.details[0].message });
 

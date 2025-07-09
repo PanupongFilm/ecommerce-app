@@ -16,12 +16,10 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post('http://localhost:4001/user/forgot-password', data, { withCredentials: true });
       if (response.status === 202) {
-        const purpose = 'reset-password';
-        const payload = { ...data, purpose };
-
-        const newResponse = await axios.post('http://localhost:4001/otp/sending', payload, { withCredentials: true });
+    
+        const newResponse = await axios.post('http://localhost:4001/otp/sending', {}, { withCredentials: true });
         if(newResponse.status === 201) {
-          navigate('/verifying', { state: { email: payload.email} });
+          navigate('/verifying');
         }
       }
     } catch (error) {
@@ -71,7 +69,8 @@ const ForgotPassword = () => {
                 placeholder='Enter your email'
               />
 
-              {errors.email && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.email.message}</p>)}
+              {errors.email && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.email.message}</p>)}
+              {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errorMessage}</p>)}
             </div>
 
             <button type='submit'

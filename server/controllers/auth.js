@@ -2,6 +2,7 @@ import { User, validation } from "../models/user.js";
 import RefreshToken from '../models/refreshToken.js';
 import { makeCookie, clearCookie } from "../utils/setCookie.js";
 import makeRefreshToken from "../utils/makeRefreshToken.js";
+import jwt from 'jsonwebtoken';
 
 
 const login = async (req, res) => {
@@ -108,7 +109,20 @@ const check = (req, res) => {
 const forgotPassword = async (req,res)=>{
     try{
         const user = await User.findOne({email: req.body.email});
-        if(!user) return res.status(404).json({message: "User not found"});
+        if(!user) return res.status(404).json({message: "Email is invalid"});
+
+        const payload = {
+            email: req.body.email,
+            purpose: "reset-password"
+        }
+
+        const dataToken = jwt.sign(payload,process.env.TOKEN_SECRET,{expiresIn:'4m'});
+        res.cookie('dataToken',dataToken,{
+            httpOnly: true,
+            secure: false,
+            samesite: 'lax',
+            maxAge: 4 * 60 * 1000
+        })
 
         return res.status(202).json({ message: "Email is valid" });
 

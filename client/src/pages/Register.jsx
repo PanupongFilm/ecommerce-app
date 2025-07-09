@@ -18,12 +18,10 @@ const Register = () => {
         try {
             const response = await axios.post('http://localhost:4001/user/register', data, { withCredentials: true });
             if (response.status === 202) {
-                const purpose = 'verify-email';
-                const payload = {...data, purpose};
-
-                const newResponse = await axios.post('http://localhost:4001/otp/sending', payload, { withCredentials: true });
+               
+                const newResponse = await axios.post('http://localhost:4001/otp/sending', {}, { withCredentials: true });
                 if (newResponse.status === 201)
-                    navigate('/verifying', { state: { email: payload.email } });
+                    navigate('/verifying');
             }
         } catch (error) {
             setErrorMessage(error.response.data.message);

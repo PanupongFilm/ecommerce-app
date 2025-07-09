@@ -10,28 +10,12 @@ import RefreshToken from "../models/refreshToken.js";
 
 const sendOTP = async (req, res) => {
     try {
-
-        if (req.body.purpose !== 'verify-email' && req.body.purpose !== 'reset-password')
-            return res.status(400).json({ message: "Purpose incorrect format" });
-
-        if (
-            (req.body.purpose === 'verify-email') && (!req.body.userName || !req.body.password || !req.body.email) ||
-            (req.body.purpose === 'reset-password') && (!req.body.email)
-        ) {
-            return res.status(400).json({ message: "Missing required fields!" });
-        }
+        if(!req.cookies.dataToken) return res.status(400).json({message: "Missing required fields"});
+        
+        const payload = jwt.verify(req.cookies.dataToken,process.env.TOKEN_SECRET);
 
         const otp = generateOTP();
-        const payload = {
-            otp: otp,
-            email: req.body.email,
-            userName: req.body.userName,
-            password: req.body.password,
-            purpose: req.body.purpose
-        }
-
-        const otpToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '1m' });
-
+        const otpToken = jwt.sign({otp: otp}, process.env.TOKEN_SECRET, { expiresIn: '1m' });
 
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -43,19 +27,19 @@ const sendOTP = async (req, res) => {
 
         const mailOption = {
             from: 'Sparkko Shop <your-email@gmail.com>',
-            to: req.body.email,
-            subject: req.body.purpose === 'verify-email' ? 'Verify Your Email' : 'Reset Your Password',
-            html: emailTemplate(otp, req.body.purpose)
+            to: payload.email,
+            subject: payload.purpose === 'verify-email' ? 'Verify Your Email' : 'Reset Your Password',
+            html: emailTemplate(otp, payload.purpose)
         };
 
         await transporter.sendMail(mailOption);
 
-        res.cookie('otpToken', otpToken, {
+        res.cookie('otpToken',otpToken,{
             httpOnly: true,
             secure: false,
-            sameSite: 'lax',
+            samesite: 'lax',
             maxAge: 60 * 1000
-        });
+        })
 
         return res.status(201).json({ message: "Send OTP successfully" });
 
@@ -68,14 +52,20 @@ const sendOTP = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
     try {
+
+        console.log(req.user);
+        console.log(req.body.otp);
+
         if (!req.body.otp) return res.status(400).json({ message: "OTP is required" });
 
-        if (!req.cookies.otpToken) return res.status(400).json({ message: "OTP token not found" });
+        if (!req.cookies.otpToken) return res.status(400).json({ message: "Invalid or expired OTP" });
 
-        const payload = jwt.verify(req.cookies.otpToken, process.env.TOKEN_SECRET);
+        const otpPayload = jwt.verify(req.cookies.otpToken, process.env.TOKEN_SECRET);
 
-        if (req.body.otp !== payload.otp) return res.status(401).json({ message: "Invalid or expired OTP" });
+        if (req.body.otp !== otpPayload.otp) return res.status(401).json({ message: "Invalid or expired OTP" });
         res.clearCookie('otpToken');
+
+        const payload = req.user;
 
         if (payload.purpose === 'reset-password') {
 

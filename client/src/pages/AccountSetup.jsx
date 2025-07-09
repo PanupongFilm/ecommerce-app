@@ -1,15 +1,16 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const AccountSetup = () => {
-   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [userInvalid, setUserInvalid] = useState(false);
     const navigate = useNavigate();
 
-    const [errorMessage,setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const onSubmit = async (data) => {
@@ -40,8 +41,9 @@ const AccountSetup = () => {
             </header>
 
             <main className="flex-grow flex items-center justify-center">
-                <div className="p-9 pt-5 mt-7 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-118">
-                    <h1 className="text-2xl font-bold mb-4 text-center text-white text-">Complete your account setup</h1>
+                <div className="p-9 pt-5 mt-7 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-92">
+                    <h1 className="text-2xl font-bold mb-2 text-center text-white text-">Complete your account setup</h1>
+                    <h2 className="text-sm font-bold mb-4 text-center text-white ">Set username and password for later logins</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -68,18 +70,18 @@ const AccountSetup = () => {
                             <label className="block mb-2 ml-3 font-semibold text-white text-sm">Password</label>
                             <input
                                 type={showPassword ? "text" : "password"}
-                                {...register('password', { 
+                                {...register('password', {
 
-                                    required: "Please enter your password", 
-                                    minLength:{
+                                    required: "Please enter your password",
+                                    minLength: {
                                         value: 8,
                                         message: "Password must be at least 8 characters"
                                     },
-                                    maxLength:{
+                                    maxLength: {
                                         value: 32,
                                         message: "Password must not exceed 32 characters"
                                     },
-                                    pattern:{
+                                    pattern: {
                                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~]).{8,32}$/,
                                         message: "Must include uppercase, lowercase, number & symbol."
                                     }
@@ -110,8 +112,17 @@ const AccountSetup = () => {
 
                     </form>
 
+                    <div className='mt-3 text-center'>
+
+                        <Link to="/login" className="text-gray-200 mt-3 text-xs cursor-pointer hover:text-blue-400">
+                            Not now
+                        </Link>
+                    </div>
+
                 </div>
             </main>
+
+
 
             <footer>
 

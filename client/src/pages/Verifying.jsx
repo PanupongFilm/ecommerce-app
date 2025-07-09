@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineMarkEmailRead } from "react-icons/md";
@@ -16,17 +16,65 @@ const AccountSetup = () => {
     const info = location.state || {};
 
 
+    useEffect(() => {
+
+        const checkAccessDataToken = async () => {
+            try {
+                await axios.get('http://localhost:4001/user/check/data-verifying', { withCredentials: true });
+                
+            } catch (error) {
+                navigate('/register');
+            }
+        };
+
+        checkAccessDataToken();
+
+        if (counter === 0) return;
+
+        const countdown = setInterval(() => {
+
+            setCounter(previous => {
+                if (previous <= 1) {
+                    clearInterval(countdown);
+                    return 0;
+                }
+                return previous - 1;
+            });
+
+        }, 1000);
+
+        return () => clearInterval(countdown);
+    }, [counter]);
+
+
+    const handleResend = async () => {
+        try {
+            if (counter > 0) return;
+
+            const response = await axios.post('http://localhost:4001/otp/sending', info, { withCredentials: true });
+            if (response.status === 201) {
+                setCounter(60);
+            }
+
+
+        } catch (error) {
+            setErrorMessage(error.response.data.message);
+            setUserInvalid(true);
+        }
+    }
+
+
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:4001/otp/verifying',data,{withCredentials: true});
+            const response = await axios.post('http://localhost:4001/otp/verifying', data, { withCredentials: true });
 
-            if(response.status === 200){
+            if (response.status === 200) {
                 navigate('/reset-password');
             }
-            else if(response.status === 201){
+            else if (response.status === 201) {
                 navigate('/');
             }
-            
+
         } catch (error) {
             setErrorMessage(error.response.data.message);
             setUserInvalid(true);
@@ -92,9 +140,10 @@ const AccountSetup = () => {
 
                             <button
                                 type='button'
-                                onClick={() => { }}
+                                disabled={counter > 0}
+                                onClick={handleResend}
                                 className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
-                            >{counter ? "hide" : "Resend"}</button>
+                            >{counter > 0 ? `Resend in ${counter}s` : `Resend`}</button>
 
                             {errors.otp && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.otp.message}</p>)}
                             {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errorMessage}</p>)}

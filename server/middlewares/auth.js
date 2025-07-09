@@ -30,4 +30,19 @@ const authResetPassword = (req,res,next)=>{
     }
 }
 
-export {authMiddleware, authResetPassword};
+const authVerifying = (req,res,next)=>{
+    try{
+        const currentDataToken = req.cookies.dataToken;
+        if(!currentDataToken) return res.status(401).send({message: "Access token not found or invalid"});
+
+        const payload = jwt.verify(currentDataToken,process.env.TOKEN_SECRET);
+        req.user = payload;
+        next();
+        
+    }catch(error){
+        console.error("Error from /server/middlewares/auth.js at authMiddleware: " + error);
+        return res.status(401).send({message: "Data token not found or invalid"});   
+    }   
+}
+
+export {authMiddleware, authResetPassword, authVerifying};
