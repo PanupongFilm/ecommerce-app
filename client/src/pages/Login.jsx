@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
+import Navbar from '../components/Navbar';
+
+
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -25,94 +28,99 @@ const Login = () => {
     };
 
     return (
-        <div
-            className="min-h-screen flex flex-col"
-            style={{
-                backgroundImage: "url('/Login-background.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-            }}
-        >
-            <header>
+        <div>
+            <div
+                className="min-h-screen flex flex-col"
+                style={{
+                    backgroundImage: "url('/Login-background.png')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                <header>
+                    <nav>
+                        <Navbar/>
+                    </nav>
+                </header>
 
-            </header>
+                <main className="flex-grow flex items-center justify-center pt-14">
+                    <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-100">
+                        <h1 className="text-2xl font-bold mb-4 text-center text-white text-">Login</h1>
 
-            <main className="flex-grow flex items-center justify-center">
-                <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-100">
-                    <h1 className="text-2xl font-bold mb-4 text-center text-white text-">Login</h1>
+                        <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                            {/* Username */}
+                            <div className="mb-7 relative text-sm">
+                                <label className="block mb-2 ml-3 font-semibold text-white">User name</label>
+                                <input
+                                    type='text'
+                                    {...register('userName', { required: "Please enter your username" })}
 
-                        {/* Username */}
-                        <div className="mb-7 relative text-sm">
-                            <label className="block mb-2 ml-3 font-semibold text-white">User name</label>
-                            <input
-                                type='text'
-                                {...register('userName', { required: "Please enter your username" })}
-
-                                className={`w-full border rounded-3xl px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
+                                    className={`w-full border rounded-3xl px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
                                  caret-white text-white 
                                 ${errors.userName ? "border-red-500" : "border-gray-100"}
                                 ${userInvalid ? "border-red-500" : "border-gray-100"} `}
 
-                                placeholder='Enter your user name'
-                            />
+                                    placeholder='Enter your user name'
+                                />
 
-                            {errors.userName && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.userName.message}</p>)}
-                        </div>
+                                {errors.userName && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.userName.message}</p>)}
+                            </div>
 
-                        {/* Password */}
-                        <div className='mb-5 relative'>
-                            <label className="block mb-2 ml-3 font-semibold text-white text-sm">Password</label>
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                {...register('password', { required: "Please enter your password" })}
-                                className={`border rounded-3xl w-full px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
+                            {/* Password */}
+                            <div className='mb-5 relative'>
+                                <label className="block mb-2 ml-3 font-semibold text-white text-sm">Password</label>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    {...register('password', { required: "Please enter your password" })}
+                                    className={`border rounded-3xl w-full px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
                                  caret-white text-white	text-sm
                                 ${errors.password ? "border-red-500" : "border-gray-100"} 
                                 ${userInvalid ? "border-red-500" : "border-gray-100"} `}
 
-                                placeholder='Enter your password'
-                            />
+                                    placeholder='Enter your password'
+                                />
 
-                            <button
-                                type='button'
-                                onClick={() => { setShowPassword(!showPassword) }}
-                                className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
-                            >{showPassword ? "hide" : "show"}</button>
+                                <button
+                                    type='button'
+                                    onClick={() => { setShowPassword(!showPassword) }}
+                                    className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
+                                >{showPassword ? "hide" : "show"}</button>
 
-                            {errors.password && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.password.message}</p>)}
-                            {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>Incorrect username or password</p>)}
+                                {errors.password && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.password.message}</p>)}
+                                {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>Incorrect username or password</p>)}
+                            </div>
+
+
+                            <button type='submit'
+                                disabled={isSubmitting}
+                                className='bg-white rounded-3xl w-full mt-4 py-1.5 font-bold text-sm text-gray-800 cursor-pointer'
+                            >{isSubmitting ? "Loading..." : "Login"}</button>
+
+                        </form>
+
+                        <GoogleLoginButton />
+
+                        <div className='mb-3 relative'>
+
+                            <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-xs cursor-pointer hover:text-blue-400">
+                                Forget password?
+                            </Link>
+
+                            <Link to="/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
+                                Sign-Up
+                            </Link>
                         </div>
 
-
-                        <button type='submit'
-                            disabled={isSubmitting}
-                            className='bg-white rounded-3xl w-full mt-4 py-1.5 font-bold text-sm text-gray-800 cursor-pointer'
-                        >{isSubmitting ? "Loading..." : "Login"}</button>
-
-                    </form>
-
-                    <GoogleLoginButton />
-
-                    <div className='mb-3 relative'>
-
-                        <Link to="/forgot-password" className="text-gray-200 mt-3 absolute left-3 text-xs cursor-pointer hover:text-blue-400">
-                            Forget password?
-                        </Link>
-
-                        <Link to="/register" className="text-gray-200 mt-3 absolute right-3 text-xs cursor-pointer hover:text-blue-400">
-                            Sign Up
-                        </Link>
                     </div>
+                </main>
 
-                </div>
-            </main>
+                <footer>
 
-            <footer>
+                </footer>
+            </div>
 
-            </footer>
         </div>
     );
 };

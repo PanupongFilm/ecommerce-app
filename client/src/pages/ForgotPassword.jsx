@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { LuShieldQuestion } from "react-icons/lu";
 
+import Navbar from '../components/Navbar';
 
 
 const ForgotPassword = () => {
@@ -16,9 +17,9 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post('http://localhost:4001/user/forgot-password', data, { withCredentials: true });
       if (response.status === 202) {
-    
+
         const newResponse = await axios.post('http://localhost:4001/otp/sending', {}, { withCredentials: true });
-        if(newResponse.status === 201) {
+        if (newResponse.status === 201) {
           navigate('/verifying');
         }
       }
@@ -39,10 +40,12 @@ const ForgotPassword = () => {
       }}
     >
       <header>
-
+        <nav>
+          <Navbar />
+        </nav>
       </header>
 
-      <main className="flex-grow flex items-center justify-center">
+      <main className="flex-grow flex items-center justify-center pt-7">
         <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-79">
 
           <div className="flex justify-center mb-3 text-white text-6xl">

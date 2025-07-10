@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdLockPerson } from "react-icons/md";
 
+import Navbar from '../components/Navbar';
+
 const ResetPassword = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
@@ -11,23 +13,23 @@ const ResetPassword = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        const checkAccessPasswordResetToken = async ()=>{
-            try{
-                await axios.get('http://localhost:4001/user/check/reset-password',{ withCredentials: true });
+    useEffect(() => {
+        const checkAccessPasswordResetToken = async () => {
+            try {
+                await axios.get('http://localhost:4001/user/check/reset-password', { withCredentials: true });
 
-            }catch(error){
+            } catch (error) {
                 navigate('/login');
             }
         }
         checkAccessPasswordResetToken();
-    },[]);
+    }, []);
 
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.patch('http://localhost:4001/user/reset-password',data,{withCredentials:true});
-            if(response.status === 200){
+            const response = await axios.patch('http://localhost:4001/user/reset-password', data, { withCredentials: true });
+            if (response.status === 200) {
                 navigate('/login');
             }
 
@@ -48,10 +50,12 @@ const ResetPassword = () => {
             }}
         >
             <header>
-
+                <nav>
+                    <Navbar />
+                </nav>
             </header>
 
-            <main className="flex-grow flex items-center justify-center">
+            <main className="flex-grow flex items-center justify-center pt-7">
                 <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-79">
 
                     <div className="flex justify-center mb-3 text-white text-6xl">

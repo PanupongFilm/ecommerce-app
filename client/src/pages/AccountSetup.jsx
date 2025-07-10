@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-
+import Navbar from '../components/Navbar';
 
 const AccountSetup = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -37,10 +37,12 @@ const AccountSetup = () => {
             }}
         >
             <header>
-
+                <nav>
+                    <Navbar />
+                </nav>
             </header>
 
-            <main className="flex-grow flex items-center justify-center">
+            <main className="flex-grow flex items-center justify-center pt-4">
                 <div className="p-9 pt-5 mt-7 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-92">
                     <h1 className="text-2xl font-bold mb-2 text-center text-white text-">Complete your account setup</h1>
                     <h2 className="text-sm font-bold mb-4 text-center text-white ">Set username and password for later logins</h2>
