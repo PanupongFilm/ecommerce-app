@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 
 
@@ -40,7 +41,7 @@ const Login = () => {
             >
                 <header>
                     <nav>
-                        <Navbar/>
+                        <Navbar />
                     </nav>
                 </header>
 
@@ -116,10 +117,11 @@ const Login = () => {
                     </div>
                 </main>
 
-                <footer>
-
-                </footer>
             </div>
+
+            <footer>
+                <Footer />
+            </footer>
 
         </div>
     );

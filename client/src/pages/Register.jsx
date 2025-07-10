@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -157,11 +159,12 @@ const Register = () => {
 
                     </div>
                 </main>
-
-                <footer>
-
-                </footer>
             </div>
+
+
+            <footer>
+                <Footer />
+            </footer>
 
 
         </div>

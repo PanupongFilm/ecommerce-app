@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 
 import Navbar from '../components/Navbar';
-
+import Footer from '../components/Footer';
 
 const AccountSetup = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -83,96 +83,100 @@ const AccountSetup = () => {
     };
 
     return (
-        <div
-            className="min-h-screen flex flex-col"
-            style={{
-                backgroundImage: "url('/Login-background.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-            }}
-        >
-            <header>
-                <nav>
-                    <Navbar />
-                </nav>
-            </header>
+        <div>
+            <div
+                className="min-h-screen flex flex-col"
+                style={{
+                    backgroundImage: "url('/Login-background.png')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                <header>
+                    <nav>
+                        <Navbar />
+                    </nav>
+                </header>
 
-            <main className="flex-grow flex items-center justify-center pt-7">
-                <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-77">
+                <main className="flex-grow flex items-center justify-center pt-7">
+                    <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-77">
 
-                    <div className="flex justify-center mb-3 text-white text-6xl">
-                        <MdOutlineMarkEmailRead />
-                    </div>
-
-
-                    <h1 className="text-xl font-bold mb-1 text-center text-white ">Enter your code</h1>
-                    <h2 className="text-sm font-bold mb-4 text-center text-white ">We sent a 6-digit OTP to {info.email}</h2>
-
-                    <form onSubmit={handleSubmit(onSubmit)}>
-
-                        {/* OTP */}
-                        <div className='mb-5 relative'>
-
-                            <input
-                                type="text"
-                                inputMode="numeric"
-                                pattern="[0-9]*"
-                                maxLength={6}
-                                {...register('otp', {
-                                    required: "Please enter the OTP",
-                                    minLength: {
-                                        value: 6,
-                                        message: "OTP must be 6 digits"
-                                    },
-                                    maxLength: {
-                                        value: 6,
-                                        message: "OTP must be 6 digits"
-                                    },
-                                    pattern: {
-                                        value: /^[0-9]{6}$/,
-                                        message: "OTP must contain only numbers"
-                                    }
-                                })}
-                                className={`border rounded-3xl w-full px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
-                                 caret-white text-white text-sm
-                                 ${errors.otp ? "border-red-500" : "border-gray-100"}`}
-                                placeholder="Enter OTP"
-                            />
-
-
-                            <button
-                                type='button'
-                                disabled={counter > 0}
-                                onClick={handleResend}
-                                className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
-                            >{counter > 0 ? `Resend in ${counter}s` : `Resend`}</button>
-
-                            {errors.otp && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.otp.message}</p>)}
-                            {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errorMessage}</p>)}
+                        <div className="flex justify-center mb-3 text-white text-6xl">
+                            <MdOutlineMarkEmailRead />
                         </div>
 
 
-                        <button type='submit'
-                            disabled={isSubmitting}
-                            className='bg-white rounded-3xl w-full mt-2 py-1.5 font-bold text-sm text-gray-800 cursor-pointer'
-                        >{isSubmitting ? "Loading..." : "Continue"}</button>
+                        <h1 className="text-xl font-bold mb-1 text-center text-white ">Enter your code</h1>
+                        <h2 className="text-sm font-bold mb-4 text-center text-white ">We sent a 6-digit OTP to {info.email}</h2>
 
-                    </form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <div className='mb-1 mt-3 text-center'>
+                            {/* OTP */}
+                            <div className='mb-5 relative'>
 
-                        <Link to="/register" className="text-gray-200 mt-3 text-xs cursor-pointer hover:text-blue-400">
-                            Not now
-                        </Link>
+                                <input
+                                    type="text"
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    maxLength={6}
+                                    {...register('otp', {
+                                        required: "Please enter the OTP",
+                                        minLength: {
+                                            value: 6,
+                                            message: "OTP must be 6 digits"
+                                        },
+                                        maxLength: {
+                                            value: 6,
+                                            message: "OTP must be 6 digits"
+                                        },
+                                        pattern: {
+                                            value: /^[0-9]{6}$/,
+                                            message: "OTP must contain only numbers"
+                                        }
+                                    })}
+                                    className={`border rounded-3xl w-full px-4 py-1.5 focus:outline-none placeholder-white focus:placeholder-transparent
+                                 caret-white text-white text-sm
+                                 ${errors.otp ? "border-red-500" : "border-gray-100"}`}
+                                    placeholder="Enter OTP"
+                                />
+
+
+                                <button
+                                    type='button'
+                                    disabled={counter > 0}
+                                    onClick={handleResend}
+                                    className='absolute right-5 bottom-2.5 text-xs text-gray-100 cursor-pointer'
+                                >{counter > 0 ? `Resend in ${counter}s` : `Resend`}</button>
+
+                                {errors.otp && userInvalid === false && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errors.otp.message}</p>)}
+                                {userInvalid && (<p className='text-red-500 ml-2 mt-1 text-xs absolute'>{errorMessage}</p>)}
+                            </div>
+
+
+                            <button type='submit'
+                                disabled={isSubmitting}
+                                className='bg-white rounded-3xl w-full mt-2 py-1.5 font-bold text-sm text-gray-800 cursor-pointer'
+                            >{isSubmitting ? "Loading..." : "Continue"}</button>
+
+                        </form>
+
+                        <div className='mb-1 mt-3 text-center'>
+
+                            <Link to="/register" className="text-gray-200 mt-3 text-xs cursor-pointer hover:text-blue-400">
+                                Not now
+                            </Link>
+                        </div>
+
                     </div>
+                </main>
 
-                </div>
-            </main>
+            </div>
 
             <footer>
-
+                <Footer />
             </footer>
+
         </div>
     );
 }
