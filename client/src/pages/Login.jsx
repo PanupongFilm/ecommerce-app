@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
+import AuthBackground from '../components/AuthBackground';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
+import { CgLogIn } from "react-icons/cg";
 
 
 const Login = () => {
@@ -30,15 +32,8 @@ const Login = () => {
 
     return (
         <div>
-            <div
-                className="min-h-screen flex flex-col"
-                style={{
-                    backgroundImage: "url('/Login-background.png')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            >
+
+            <AuthBackground>
                 <header>
                     <nav>
                         <Navbar />
@@ -47,7 +42,11 @@ const Login = () => {
 
                 <main className="flex-grow flex items-center justify-center pt-14">
                     <div className="p-9 pt-5 rounded-xl shadow-2xl bg-black/50 backdrop-blur-sm w-full max-w-105 max-h-100">
-                        <h1 className="text-2xl font-bold mb-4 text-center text-white text-">Login</h1>
+                        
+                        <div className='flex justify-center gap-1 items-center mb-4 text-white'>
+                            <CgLogIn className='mt-1' size={30} />
+                            <h1 className="text-2xl font-bold ">Login</h1>
+                        </div>
 
                         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -117,7 +116,7 @@ const Login = () => {
                     </div>
                 </main>
 
-            </div>
+            </AuthBackground>
 
             <footer>
                 <Footer />

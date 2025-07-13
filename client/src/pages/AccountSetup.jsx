@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
+import AuthBackground from '../components/AuthBackground';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -32,15 +33,7 @@ const AccountSetup = () => {
     return (
 
         <div>
-            <div
-                className="min-h-screen flex flex-col"
-                style={{
-                    backgroundImage: "url('/Login-background.png')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            >
+            <AuthBackground>
                 <header>
                     <nav>
                         <Navbar />
@@ -130,7 +123,7 @@ const AccountSetup = () => {
                 </main>
 
 
-            </div>
+            </AuthBackground>
 
             <footer>
                 <Footer />

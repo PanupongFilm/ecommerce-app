@@ -4,8 +4,11 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleLoginButton from '../components/googleLoginButton';
 
+
+import AuthBackground from '../components/AuthBackground';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+
 
 
 const Register = () => {
@@ -35,15 +38,7 @@ const Register = () => {
     return (
 
         <div>
-            <div
-                className="min-h-screen flex flex-col"
-                style={{
-                    backgroundImage: "url('/Login-background.png')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            >
+            <AuthBackground>
                 <header>
                     <nav>
                         <Navbar />
@@ -148,7 +143,7 @@ const Register = () => {
                                 Already have an account?{' '}
                                 <Link
                                     to="/login"
-                                    className="text-blue-400 cursor-pointer hover:text-blue-600 ml-1"
+                                    className="text-blue-400 cursor-pointer ml-1"
                                 >
                                     Login
                                 </Link>
@@ -159,7 +154,7 @@ const Register = () => {
 
                     </div>
                 </main>
-            </div>
+            </AuthBackground>
 
 
             <footer>

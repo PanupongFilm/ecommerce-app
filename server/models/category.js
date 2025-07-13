@@ -1,10 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new Schema({
-    categoryName: {type:String , required: true},
-    description: { type: String, default: "Please enter the description" }
-    
+
+    name:{type:String,required:true,unique:true, trim:true},
+    img:{type:String,required: true},
+    productCount:{type:Number,default: 0, min:0}
+
 },{timestamps: true});
+
 
 const Category = mongoose.model("Category",categorySchema);
 

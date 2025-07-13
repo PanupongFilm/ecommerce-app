@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 
+import AuthBackground from '../components/AuthBackground';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -84,15 +85,8 @@ const AccountSetup = () => {
 
     return (
         <div>
-            <div
-                className="min-h-screen flex flex-col"
-                style={{
-                    backgroundImage: "url('/Login-background.png')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            >
+            <AuthBackground>
+ 
                 <header>
                     <nav>
                         <Navbar />
@@ -171,7 +165,7 @@ const AccountSetup = () => {
                     </div>
                 </main>
 
-            </div>
+            </AuthBackground>
 
             <footer>
                 <Footer />

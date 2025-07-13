@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { LuShieldQuestion } from "react-icons/lu";
 
+import AuthBackground from '../components/AuthBackground.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 
@@ -32,15 +33,8 @@ const ForgotPassword = () => {
   return (
 
     <div>
-      <div
-        className="min-h-screen flex flex-col"
-        style={{
-          backgroundImage: "url('/Login-background.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
+      <AuthBackground>
+
         <header>
           <nav>
             <Navbar />
@@ -95,7 +89,7 @@ const ForgotPassword = () => {
           </div>
         </main>
 
-      </div>
+      </AuthBackground>
 
       <footer>
         <Footer />
