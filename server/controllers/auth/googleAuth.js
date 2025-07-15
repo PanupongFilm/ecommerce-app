@@ -6,7 +6,7 @@ import makeRefreshToken from '../../utils/makeRefreshToken.js';
 
 
 
-const googleAuth = async (req, res) => {
+const googleAuth = async (req,res,next) => {
     try {
 
         const accessToken = req.body.token;
@@ -55,8 +55,8 @@ const googleAuth = async (req, res) => {
         }
 
     } catch (error) {
-        console.error("Error from /server/controllers/googleAuth.js at googleAuth controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/googleAuth.js at googleAuth controller: " + error);
+        next(error);
     }
 }
 

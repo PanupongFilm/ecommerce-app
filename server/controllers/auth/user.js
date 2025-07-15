@@ -1,7 +1,7 @@
 import { User, validation } from '../../models/auth/user.js';
 import jwt from 'jsonwebtoken';
 
-const register = async (req, res) => {
+const register = async (req,res,next) => {
     try {
         const { error } = validation(req.body);
         if (error) return res.status(400).json({ message: error.details[0].message });
@@ -30,12 +30,12 @@ const register = async (req, res) => {
         return res.status(202).json({ message: "OTP sent to email. Please verify to complete registration." });
 
     } catch (error) {
-        console.error("Error from /server/controllers/user.js at registerUser controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/user.js at registerUser controller: " + error);
+        next(error);
     }
 }
 
-const completeAccountSetup = async (req, res) => {
+const completeAccountSetup = async (req,res,next) => {
     try {
         const { error } = validation(req.body);
         if (error) return res.status(400).json({ message: error.details[0].message });
@@ -52,8 +52,8 @@ const completeAccountSetup = async (req, res) => {
         return res.status(200).json({ message: "Account setup completed" });
 
     } catch (error) {
-        console.error("Error from /server/controllers/user.js at completeAccountSetup controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controller/auths/user.js at completeAccountSetup controller: " + error);
+        next(error);
     }
 }
 

@@ -8,7 +8,7 @@ import { makeCookie } from "../../utils/setCookie.js";
 import RefreshToken from "../../models/auth/refreshToken.js";
 
 
-const sendOTP = async (req, res) => {
+const sendOTP = async (req,res,next) => {
     try {
         if(!req.cookies.dataToken) return res.status(400).json({message: "Missing required fields"});
         
@@ -44,13 +44,13 @@ const sendOTP = async (req, res) => {
         return res.status(201).json({ message: "Send OTP successfully" });
 
     } catch (error) {
-        console.error("Error from /server/controllers/otp.js at sendOTP controller:  " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/otp.js at sendOTP controller:  " + error);
+        next(error);
     }
 }
 
 
-const verifyOTP = async (req, res) => {
+const verifyOTP = async (req,res) => {
     try {
 
         console.log(req.user);
@@ -98,7 +98,7 @@ const verifyOTP = async (req, res) => {
         return res.status(201).json({ message: "OTP verified and account created successfully" });
 
     } catch (error) {
-        console.error("Error from /server/controllers/otp.js at verifyOTP controller: " + error);
+        console.error("Error from /server/controllers/auth/otp.js at verifyOTP controller: " + error);
         return res.status(401).json({ message: "Invalid or expired OTP" });
     }
 }

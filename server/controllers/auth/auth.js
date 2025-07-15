@@ -5,7 +5,7 @@ import makeRefreshToken from "../../utils/makeRefreshToken.js";
 import jwt from 'jsonwebtoken';
 
 
-const login = async (req, res) => {
+const login = async (req,res,next) => {
     try {
         const user = await User.findOne({ userName: req.body.userName });
         if (!user) return res.status(401).json({ message: "Incorrect username or password" });
@@ -24,12 +24,12 @@ const login = async (req, res) => {
 
 
     } catch (error) {
-        console.error("Error from /server/controllers/auth.js at loginUser Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/auth.js at loginUser Controller: " + error);
+        next(error);
     }
 }
 
-const logout = async (req, res) => {
+const logout = async (req,res,next) => {
     try {
 
         const currentRefreshToken = req.cookies.refreshToken;
@@ -50,12 +50,12 @@ const logout = async (req, res) => {
         res.status(200).json({ message: "Logout successful" });
 
     } catch (error) {
-        console.error("Error from /server/controllers/auth.js at logoutUser Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/auth.js at logoutUser Controller: " + error);
+        next(error);
     }
 }
 
-const refreshToken = async (req, res) => {
+const refreshToken = async (req,res,next) => {
     try {
         const currentRefreshToken_cookie = req.cookies.refreshToken;
         const currentRefreshTokenId_cookie = req.cookies.refreshTokenId;
@@ -91,22 +91,22 @@ const refreshToken = async (req, res) => {
 
 
     } catch (error) {
-        console.error("Error from /server/controllers/auth.js at refreshTokenUser Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/auth.js at refreshTokenUser Controller: " + error);
+        next(error);
     }
 }
 
-const check = (req, res) => {
+const check = (req, res, next) => {
     try {
         return res.status(200).send(req.user);
 
     } catch (error) {
-        console.error("Error from /server/controllers/auth.js at check Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/auth.js at check Controller: " + error);
+        next(error);
     }
 }
 
-const forgotPassword = async (req,res)=>{
+const forgotPassword = async (req,res, next)=>{
     try{
         const user = await User.findOne({email: req.body.email});
         if(!user) return res.status(404).json({message: "Email is invalid"});
@@ -127,12 +127,12 @@ const forgotPassword = async (req,res)=>{
         return res.status(202).json({ message: "Email is valid" });
 
     }catch(error){
-        console.error("Error from /server/controllers/auth.js at forgotPassword Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error from /server/controllers/auth/auth.js at forgotPassword Controller: " + error);
+        next(error);
     }
 }
 
-const resetPassword = async (req,res)=>{
+const resetPassword = async (req,res,next)=>{
     try{
         const { error } = validation(req.body);
         if (error) return res.status(400).json({ message: error.details[0].message });
@@ -146,8 +146,8 @@ const resetPassword = async (req,res)=>{
         return res.status(200).json({message: "Password has been reset successfully"});
     }
     catch(error){
-        console.error("Error from /server/controllers/auth.js at resetPassword Controller: " + error);
-        return res.status(500).json({ message: "Internal Server Error" });     
+        console.error("Error from /server/controllers/auth/auth.js at resetPassword Controller: " + error);
+        next(error); 
     }
 }
 

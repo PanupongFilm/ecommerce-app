@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const bannerSchema = new Schema({
 
     img:{type:String, required: true, trim:true},
-    tag:{typeString , default:"" , trim:true},
+    tag:{type:String , default:"" , trim:true},
     title:{type:String,default:"", trim:true},
     subTitle:{type:String,default:"", trim:true},
 
@@ -13,3 +13,7 @@ const bannerSchema = new Schema({
     buttonColor:{type:String, default:"#000000" , trim:true},
 
 },{timestamps:true});
+
+const Banner = mongoose.model("Banner",bannerSchema);
+
+export default Banner;
