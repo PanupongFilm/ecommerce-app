@@ -1,3 +1,12 @@
 @import "tailwindcss";
 
+.swiper-pagination-bullet {
+  background: gray;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  background: #14b8a6; /* สีเขียวอมฟ้า (teal-500) */
+  opacity: 1;
+}
 

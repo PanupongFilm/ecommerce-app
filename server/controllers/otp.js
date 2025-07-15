@@ -1,11 +1,11 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import { User } from "../models/user.js";
+import { User } from "../models/auth/user.js";
 import emailTemplate from "../utils/emailTemplate.js";
 import generateOTP from "../utils/generateOTP.js";
 import makeRefreshToken from "../utils/makeRefreshToken.js";
 import { makeCookie } from "../utils/setCookie.js";
-import RefreshToken from "../models/refreshToken.js";
+import RefreshToken from "../models/auth/refreshToken.js";
 
 
 const sendOTP = async (req, res) => {

@@ -1,16 +1,32 @@
 import { useEffect, useState } from 'react';
 
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/pagination';
+
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-import { TbTruckDelivery } from "react-icons/tb";
-import { FaRegThumbsUp } from "react-icons/fa6";
+import { BsTruck } from "react-icons/bs";
+import { BsCheckCircle } from "react-icons/bs";
+import { FaSeedling } from "react-icons/fa";
 import { FaRegCreditCard } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
+
+import CartModal from '../components/CartModal';
+import ProductCard from '../components/ProductCard';
+
 
 
 
 function Home() {
+
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [isHoverProduct, setIsHoverProduct] = useState(false);
 
   return (
     <div>
@@ -20,33 +36,70 @@ function Home() {
         <header>
 
           <nav>
-            <Navbar />
+            <Navbar openCart={() => setIsCartModalOpen(true)} />
+
+            <CartModal
+              isOpen={isCartModalOpen}
+              onClose={() => setIsCartModalOpen(false)}
+            >
+
+            </CartModal>
           </nav>
 
           {/* Honme Banner */}
           <div className='flex flex-row justify-start  px-18 py-30 gap-x-7'>
 
-            <div className='flex flex-col gap-y-4 justify-center w-190 h-107  px-8 py-50'
-              style={{
-                backgroundImage: "url('/HealthySet.jpg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}>
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              autoplay={{ delay: 3000 }}
+              loop={true}
+              pagination={{ clickable: true }}
+              className='w-190 h-107'>
 
+              <SwiperSlide>
+                <div className='flex flex-col gap-y-4 justify-center px-8 py-50 h-full'
+                  style={{
+                    backgroundImage: "url('/HealthySet.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}>
 
-              <p className='text-gray-700 text-xl'>Organic & Healthy</p>
+                  <p className='text-gray-700 text-xl'>Organic & Healthy</p>
+                  <h1 className='text-teal-700 text-5xl font-bold'>Fruit & Grain</h1>
+                  <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
 
-              <h1 className='text-teal-700 text-5xl font-bold'>Fruit & Grain</h1>
-              <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
-
-              <button className='flex justify-center items-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
+                  <button className='flex justify-center items-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
               hover:bg-teal-800'>
-                Shop now &gt;&gt;
-              </button>
+                    Shop now &gt;&gt;
+                  </button>
+                </div>
+              </SwiperSlide>
+
+              <SwiperSlide>
+                <div className='flex flex-col gap-y-4 justify-center px-8 py-50 h-full'
+                  style={{
+                    backgroundImage: "url('/HealthySet2.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}>
+
+                  <p className='text-gray-700 text-xl'>Fresh & Healthy</p>
+                  <h1 className='text-teal-700 text-5xl font-bold'>Acai mixed</h1>
+                  <p className='text-sm w-75 font-semibold text-gray-600'>Healthy Meets Delicious.</p>
+
+                  <button className='flex justify-center items-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
+              hover:bg-teal-800'>
+                    Shop now &gt;&gt;
+                  </button>
+                </div>
+              </SwiperSlide>
 
 
-            </div>
+            </Swiper>
+
+
 
             <div className='flex flex-col gap-7'>
 
@@ -94,44 +147,41 @@ function Home() {
 
         <main>
 
-          {/* Brand Promote */}
-          <div className='flex flex-row bg-yellow-700/50 text-white justify-center gap-7 items-center w-full h-50 -mt-15 '>
+          {/* Key Selling Points */}
+          <div className='flex flex-row gap-7 justify-around px-18 -mt-9'>
 
-            <div className='flex flex-row items-center gap-2'>
+            <div className='flex flex-col justify-center items-center gap-2 border border-gray-300 p-5 w-70 h-50 rounded-md'>
 
-              <div className='rounded-full bg-white flex items-center p-2'>
-                <FaRegThumbsUp size={60} className='text-teal-700' />
-              </div>
-              <div className='flex flex-col'>
-                <h1 className='text-xl font-semibold'>High Quality</h1>
-                <p className='text-sm w-70 '>Carefully selected fruits and 100% natural ingredients in every bite.</p>
-              </div>
+              <BsTruck size={60} className='text-yellow-700/90' />
+              <h1 className='text-xl font-semibold text-yellow-700'>Fast Delivery</h1>
+              <p className='w-50 text-center text-sm text-yellow-900'>Freshness delivered fast right to your doorstep</p>
 
             </div>
 
-            <div className='flex flex-row items-center gap-2'>
+            <div className='flex flex-col justify-center items-center gap-2 border border-gray-300 p-5 w-70 h-50 rounded-md'>
 
-              <div className='rounded-full bg-white flex items-center p-2'>
-                <TbTruckDelivery size={60} className='text-teal-700' />
-              </div>
-              <div className='flex flex-col'>
-                <h1 className='text-xl font-semibold'>Fast Delivery</h1>
-                <p className='text-sm w-70 '>Freshness delivered fast right to your doorstep.</p>
-              </div>
+              <FaSeedling size={60} className='text-yellow-700/90' />
+              <h1 className='text-xl font-semibold text-yellow-700'>24X7 Support</h1>
+              <p className='w-50 text-center text-sm text-yellow-900'>We're always just a message away — day or night.</p>
 
             </div>
 
-            <div className='flex flex-row items-center gap-2'>
+            <div className='flex flex-col justify-center items-center gap-2 border border-gray-300 p-5 w-70 h-50 rounded-md'>
 
-              <div className='rounded-full bg-white flex items-center p-2'>
-                <FaRegCreditCard size={60} className='text-teal-700' />
-              </div>
-              <div className='flex flex-col'>
-                <h1 className='text-xl font-semibold'>Easy Payment</h1>
-                <p className='text-sm w-60 '>Secure, simple, and flexible payment options at your fingertips.</p>
-              </div>
+              <BsCheckCircle size={60} className='text-yellow-700/90' />
+              <h1 className='text-xl font-semibold text-yellow-700'>High Quality</h1>
+              <p className='w-50 text-center text-sm text-yellow-900'>Premium-grade fruits trusted by thousands.</p>
 
             </div>
+
+            <div className='flex flex-col justify-center items-center gap-2 border border-gray-300 p-5 w-70 h-50 rounded-md'>
+
+              <FaRegCreditCard size={60} className='text-yellow-700/90' />
+              <h1 className='text-xl font-semibold text-yellow-700'>Easy Payment</h1>
+              <p className='w-50 text-center text-sm text-yellow-900'>Secure, simple, and flexible payment options at your fingertips.</p>
+
+            </div>
+
 
           </div>
 
@@ -139,8 +189,11 @@ function Home() {
           {/* Best Seller */}
           <div className='px-20 py-15 w-full h-auto '>
 
-            <div className='flex flex-row justify-between'>
-              <h1 className='text-teal-700 text-3xl font-semibold '>Best Seller</h1>
+            <div className='flex flex-row justify-between items-center'>
+              <div className='flex flex-col'>
+                <h1 className='text-teal-700 text-3xl font-semibold '>Best Seller</h1>
+                <div className='w-30 h-0.5 bg-yellow-700/60'></div>
+              </div>
 
               <button className='flex items-center justify-center border border-gray-300 w-20 h-10 hover:border-none hover:bg-teal-700 hover:text-white cursor-pointer'>
                 View all
@@ -149,156 +202,132 @@ function Home() {
             </div>
 
 
-            <div className='flex flex-row flex-wrap pt-8 gap-9'>
+            {/* Best Seller Product line */}
+            <div className='pt-8'>
 
-              {/* Product Container */}
-              <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
+              <Swiper
+                modules={[]}
+                loop={true}
+                slidesPerView={4}
+                spaceBetween={-51}
+                className='w-full h-107'
+              >
 
-                <div className="relative w-full h-45">
-                  <img src="/Fruit.jpg" alt="My Image" className='w-full h-full object-cover' />
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Fruit.jpg",
+                    tag: "Sale",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 10
+                  }} />
+                </SwiperSlide>
 
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    SALE
-                  </div>
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Fruit.jpg",
+                    tag: "New",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 10
+                  }} />
+                </SwiperSlide>
 
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Fruit.jpg",
+                    tag: "Sold out",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 10
+                  }} />
+                </SwiperSlide>
 
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Fruit.jpg",
+                    tag: "Sale",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 10
+                  }} />
+                </SwiperSlide>
 
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 352 pcs</p>
-                </div>
-
-
-              </div>
-
-              <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Fruit.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    New
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 483 pcs</p>
-                </div>
-
-              </div>
-
-              <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Fruit.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-white text-red-500 text-xs font-bold px-2 py-1 rounded">
-                    Sold out
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold text-red-500'>Sold out</h1>
-                  <p className='text-xs text-gray-500'>Sold: 742 pcs</p>
-                </div>
-
-              </div>
-
-              <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Fruit.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    SALE
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 352 pcs</p>
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Fruit.jpg",
+                    tag: "New",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 10
+                  }} />
+                </SwiperSlide>
+                  
 
 
-              </div>
+
+              </Swiper>
             </div>
           </div>
 
-          <div className='flex justify-start px-18 py-1 -mt-3'>
-
-            <div className='w-full h-100 flex items-center justify-end px-20'
-              style={{
-                backgroundImage: "url('/Jelly.jpg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}>
-
-              <div className='flex flex-col gap-y-5 text-right'>
-
-                <p className='text-green-700 text-xl font-semibold '>New Arrive</p>
-                <h1 className='text-5xl font-bold text-teal-700 -mt-1'>Jelly Fruity</h1>
-                <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
-
-                <button className=' self-end flex justify-center fitems-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
-              hover:bg-teal-800'>
-                  Shop now &gt;&gt;
-                </button>
 
 
-              </div>
-            </div>
+
+          {/* Promote Banner */}
+          <div className='flex justify-start px-18 py-1 -mt-20'>
+
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              autoplay={{ delay: 3000 }}
+              loop={false}
+              slidesPerView={1}
+              pagination={{ clickable: true }}
+              className="w-full h-100"
+            >
+
+              <SwiperSlide>
+                <div className='w-full h-100 flex items-center justify-end px-20'
+                  style={{
+                    backgroundImage: "url('/Jelly.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}>
+
+                  <div className='flex flex-col gap-y-5 text-right'>
+
+                    <p className='text-green-700 text-xl font-semibold '>New Arrive</p>
+                    <h1 className='text-5xl font-bold text-teal-700 -mt-1'>Jelly Fruity</h1>
+                    <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
+
+                    <button className=' self-end flex justify-center fitems-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
+                  hover:bg-teal-800'>
+                      Shop now &gt;&gt;
+                    </button>
+
+
+                  </div>
+                </div>
+              </SwiperSlide>
+
+
+            </Swiper>
           </div>
 
-          {/* Best Seller */}
-          <div className='px-20 py-15 w-full h-auto '>
 
-            <div className='flex flex-row justify-between'>
-              <h1 className='text-teal-700 text-3xl font-semibold '>New Arrive</h1>
+          {/* New Arrive */}
+          <div className='px-20 py-15 w-full h-auto -mt-1'>
+
+            <div className='flex flex-row justify-between items-center'>
+              <div className='flex flex-col'>
+                <h1 className='text-teal-700 text-3xl font-semibold '>New Arrive</h1>
+                <div className='w-30 h-0.5 bg-yellow-700/60'></div>
+              </div>
 
               <button className='flex items-center justify-center border border-gray-300 w-20 h-10 hover:border-none hover:bg-teal-700 hover:text-white cursor-pointer'>
                 View all
@@ -307,142 +336,178 @@ function Home() {
             </div>
 
 
-            <div className='flex flex-row flex-wrap pt-8 gap-9'>
+            {/* New Arrive Product line */}
+            <div className='pt-8'>
 
-              {/* Product Container */}
-              <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
+              <Swiper
+                modules={[]}
+                loop={true}
+                slidesPerView={4}
+                spaceBetween={-51}
+                className='w-full h-107'
+              >
 
-                <div className="relative w-full h-45">
-                  <img src="/Pudding.jpg" alt="My Image" className='w-full h-full object-cover' />
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Pudding.jpg",
+                    tag: "NEW",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 19
+                  }} />
+                </SwiperSlide>
 
-                  <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    New
-                  </div>
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Pudding.jpg",
+                    tag: "NEW",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 19
+                  }} />
+                </SwiperSlide>
 
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Pudding.jpg",
+                    tag: "NEW",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 19
+                  }} />
+                </SwiperSlide>
 
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Pudding.jpg",
+                    tag: "NEW",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 19
+                  }} />
+                </SwiperSlide>
 
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 483 pcs</p>
-                </div>
+                <SwiperSlide>
+                  <ProductCard product={{
+                    img: "/Pudding.jpg",
+                    tag: "NEW",
+                    name: "Strawberry Smoothie",
+                    description: "Bursting with fresh strawberries and creamy goodness in every sip",
+                    rating: 5,
+                    price: 19
+                  }} />
+                </SwiperSlide>
 
-              </div>
-
-                            <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Pudding.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    New
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 483 pcs</p>
-                </div>
-
-              </div>
-
-                            <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Pudding.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    New
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 483 pcs</p>
-                </div>
-
-              </div>
-
-                            <div className='bg-gray-100 flex flex-col p-4 w-65 h-80 border border-gray-200 cursor-pointer hover:border-gray-300'>
-
-                <div className="relative w-full h-45">
-                  <img src="/Pudding.jpg" alt="My Image" className='w-full h-full object-cover' />
-
-                  <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    New
-                  </div>
-                </div>
-
-                <h1 className='text-base pt-3 text-teal-700 font-semibold'>Strawberry Smoothie</h1>
-                <p className='text-xs text-gray-600 w-44 truncate'>Bursting with fresh strawberries and creamy goodness in every sip</p>
-
-                <div className='flex flex-row gap-1'>
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-yellow-500' />
-                  <FaStar size={15} className='mt-2 text-gray-300' />
-                </div>
-
-                <div className='flex flex-row justify-between mt-1 items-center'>
-                  <h1 className='text-lgs font-bold'>$19.00</h1>
-                  <p className='text-xs text-gray-500'>Sold: 483 pcs</p>
-                </div>
-
-              </div>
-
-              
-
-
-
-
-
+              </Swiper>
             </div>
           </div>
 
+          {/* Promotion or Sale */}
+
+          <div className='flex justify-start px-18 py-1 -mt-15 pb-25'>
+
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              autoplay={{ delay: 3000 }}
+              loop={false}
+              slidesPerView={1}
+              pagination={{ clickable: true }}
+              className="w-full h-100"
+            >
+
+              <SwiperSlide>
+                <div className='w-full h-100 flex items-center justify-start px-20'
+                  style={{
+                    backgroundImage: "url('/SpecialDeal.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}>
+
+                  <div className='flex flex-col gap-y-5 text-left'>
+
+
+                    <h1 className='text-4xl font-bold text-teal-700 -mt-1'>Special Deal — Up to 30% Off</h1>
+                    <p className='text-sm w-70 font-semibold text-gray-600'>Juicy deals dropping now — grab yours before they are gone!</p>
+
+                    <button className=' flex justify-center fitems-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
+                                      hover:bg-teal-800'>
+                      Shop now &gt;&gt;
+                    </button>
+
+
+                  </div>
+                </div>
+              </SwiperSlide>
+
+
+            </Swiper>
+          </div>
+
+          <div className='flex flex-row px-18 justify-around  pb-30 -mt-15'>
+
+
+            <div style={{
+              backgroundImage: "url('/sale1.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              boxShadow: '5px 10px 10px rgba(0,0,0,0.2)'
+            }} className='w-80 h-100 cursor-pointer flex flex-col items-center gap-1
+            transition-transform duration-300 ease-in-out hover:scale-105'>
+
+              <h1 className='text-3xl pt-5 font-semibold text-white'>15% off</h1>
+              <h2 className='text-xl font-semibold text-white'>Bueberry Yogurt</h2>
+
+            </div>
+
+            <div style={{
+              backgroundImage: "url('/sale2.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              boxShadow: '5px 10px 10px rgba(0,0,0,0.2)'
+            }} className='w-90 h-110 flex flex-col items-center cursor-pointer gap-1
+            transition-transform duration-300 ease-in-out hover:scale-105'>
+
+              <h1 className='text-4xl pt-5 font-semibold text-white'>30% off</h1>
+              <h2 className='text-2xl font-semibold text-white'>Strawberry Yogurt</h2>
+
+            </div>
+
+            <div style={{
+              backgroundImage: "url('/sale3.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              boxShadow: '5px 10px 10px rgba(0,0,0,0.2)'
+            }} className='w-80 h-100 cursor-pointer flex flex-col items-center gap-1
+            transition-transform duration-300 ease-in-out hover:scale-105'>
+
+              <h1 className='text-3xl pt-5 font-semibold text-white'>15% off</h1>
+              <h2 className='text-xl font-semibold text-white'>Pomegranate Mixed Grain</h2>
+
+            </div>
+
+
+
+          </div>
 
 
         </main>
 
 
-      </div>
+      </div >
 
       <footer>
         <Footer />
       </footer>
 
-    </div>
+    </div >
   )
 }
 

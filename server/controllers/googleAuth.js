@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { User } from '../models/user.js';
-import RefreshToken from '../models/refreshToken.js';
+import { User } from '../models/auth/user.js';
+import RefreshToken from '../models/auth/refreshToken.js';
 import { makeCookie, clearCookie } from "../utils/setCookie.js";
 import makeRefreshToken from '../utils/makeRefreshToken.js';
 

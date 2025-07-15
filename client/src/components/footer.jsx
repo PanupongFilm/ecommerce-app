@@ -89,7 +89,7 @@ const Footer = () => {
                     </div>
 
                     <div className="w-full h-px mt-20 bg-gray-300 my-4 flex justify-between items-center">
-                        <p className=' text-sm pt-15'>&copy;2025 DCUBE PIXEL. All rights reserved.</p>
+                        <p className=' text-sm pt-15'>&copy;2025 D-FRUIT. All rights reserved.</p>
                         
                         <div className='flex flex-row gap-4'>
                             <Link to="/" className=" text-sm pt-15 hover:text-blue-400">Terms & Condition</Link>
