@@ -48,7 +48,7 @@ const ProductCard = ({product}) => {
                     <p className='text-white text-sm font-semibold'>Add to Cart</p>
                 </button>
             ) : (
-                <p className='text-xs text-gray-500 absolute right-6 bottom-6.5'>Sold: 352 pcs</p>
+                <p className='text-xs text-gray-500 absolute right-6 bottom-6.5'>Stock: 352 pcs</p>
             )}
         </div>
     )

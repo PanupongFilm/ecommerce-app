@@ -1,7 +1,7 @@
 import express from 'express';
-import {login , logout , refreshToken, check, forgotPassword, resetPassword} from '../controllers/auth.js';
+import {login , logout , refreshToken, check, forgotPassword, resetPassword} from '../controllers/auth/auth.js';
 import {authMiddleware, authResetPassword, authVerifying} from '../middlewares/auth.js';
-import googleAuth from '../controllers/googleAuth.js'
+import googleAuth from '../controllers/auth/googleAuth.js'
 
 const router = express.Router();
 
