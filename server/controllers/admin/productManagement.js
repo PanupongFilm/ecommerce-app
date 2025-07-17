@@ -2,7 +2,6 @@ import Product from '../../models/product/product.js';
 
 const createProduct = async (req,res)=>{
     try{
-
         
 
     }catch(error){
