@@ -4,8 +4,8 @@ import cloudinary from '../../configs/cloudinary.js';
 
 const uploadToCloud = async (newFilepath) => {
 
-    const data =await cloudinary.uploader.upload(newFilepath, {
-        folder: 'Ecommerce_Folder',
+    const data = await cloudinary.uploader.upload(newFilepath, {
+        folder: process.env.CLOUDINARY_FOLDER,
         public_id: Date.now().toString(),
         overwrite: true,
         resource_type: 'image'
@@ -21,7 +21,7 @@ const uploadFileToCloudJpg = async (req, res, next) => {
         await fs.unlink(req.file.path);
         const data = await uploadToCloud(newFilepath);
 
-        return res.status(201).json({ message: "Upload file successfully", url: data.secure_url});
+        return res.status(201).json({ message: "Upload file successfully", url: data.secure_url, public_id: data.public_id });
 
     } catch (error) {
         console.error("Error from /server/controllers/admin/fileManagement.js at uploadFileToCloudJpg: ", error);
@@ -35,7 +35,7 @@ const uploadFileToCloudPng = async (req, res, next) => {
         await fs.unlink(req.file.path);
         const data = await uploadToCloud(newFilepath);
 
-        return res.status(201).json({ message: "Upload file successfully", url:data.secure_url});
+        return res.status(201).json({ message: "Upload file successfully", url: data.secure_url, public_id: data.public_id });
 
     } catch (error) {
         console.error("Error from /server/controllers/admin/fileManagement.js at uploadFileToCloudPng: ", error);
@@ -43,7 +43,18 @@ const uploadFileToCloudPng = async (req, res, next) => {
     }
 }
 
+const deleteFileFromCloudPng = async (req, res, next) => {
+    try {
+        await cloudinary.uploader.destroy(req.body.public_id);
+        return res.status(200).json({message:"Successfully deleted file from cloud"});
+
+    } catch (error) {
+        console.error("Error from /server/controllers/admin/fileManagement.js at deleteFileFromCloud: ", error);
+        next(error);
+    }
+}
 
 
 
-export { uploadFileToCloudJpg };
+
+export { uploadFileToCloudJpg, uploadFileToCloudPng, deleteFileFromCloudPng };
