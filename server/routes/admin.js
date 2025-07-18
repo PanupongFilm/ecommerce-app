@@ -1,6 +1,7 @@
 import express from 'express';
 import { uploadFileToCloudJpg, uploadFileToCloudPng, deleteFileFromCloudPng } from '../controllers/admin/fileManagement.js';
 import upload from '../middlewares/uploadImage.js';
+import { createBanner, addMainBanner, deleteMainBanner, updateBanner } from '../controllers/admin/bannerManagement.js';
 
 const router = express.Router();
 
@@ -9,6 +10,12 @@ router.post('/file/upload/jpg', upload.single('avatar'), uploadFileToCloudJpg);
 router.post('/file/upload/png', upload.single('avatar'), uploadFileToCloudPng);
 router.delete('/file/delete',deleteFileFromCloudPng);
 
+
+//Banner Management
+router.post('/banner/create',createBanner);
+router.post('/banner/add',addMainBanner);
+router.delete('/banner/delete',deleteMainBanner);
+router.patch('/banner/update',updateBanner);
 
 
 export default router;
