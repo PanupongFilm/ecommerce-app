@@ -17,5 +17,7 @@ router.post('/banner/add',addMainBanner);
 router.delete('/banner/delete',deleteMainBanner);
 router.patch('/banner/update',updateBanner);
 
+//Product Magement
+
 
 export default router;
