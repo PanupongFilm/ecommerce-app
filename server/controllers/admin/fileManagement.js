@@ -46,7 +46,7 @@ const uploadFileToCloudPng = async (req, res, next) => {
 const deleteFileFromCloudPng = async (req, res, next) => {
     try {
         await cloudinary.uploader.destroy(req.body.public_id);
-        return res.status(200).json({message:"Successfully deleted file from cloud"});
+        return res.status(200).json({ message: "Successfully deleted file from cloud" });
 
     } catch (error) {
         console.error("Error from /server/controllers/admin/fileManagement.js at deleteFileFromCloud: ", error);
