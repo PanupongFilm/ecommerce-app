@@ -6,6 +6,7 @@ import AccountSetup from './pages/AccountSetup.jsx';
 import Verifying from './pages/Verifying.jsx';
 import ForgotPassword from './pages/forgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
+import Admin from './pages/Admin.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google'; 
 import './app.css';
 
@@ -25,6 +26,7 @@ function App() {
         <Route path='/verifying' element={<Verifying/>}/>
         <Route path='forgot-password' element={<ForgotPassword/>}/>
         <Route path='/reset-password' element={<ResetPassword/>}/>
+        <Route path='/admin/218367b310cb4b8f7deb76ab7e8abb933638efef13609a6994787b7d385b62827a435822924132bdb5f15097916c23d1d7395c7acda2dae28d0e33712773e4e9-dashboard' element={<Admin/>}/>
       </Routes>
     </GoogleOAuthProvider>
   );
