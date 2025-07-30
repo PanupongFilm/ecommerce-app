@@ -22,10 +22,12 @@ const ProductCard = ({product}) => {
     }
 
     return (
-        <div className='bg-gray-100 flex flex-col p-4 w-65 h-83 border border-gray-200 cursor-pointer hover:border-gray-300 relative' onMouseEnter={() => setIsHoverProduct(true)} onMouseLeave={() => setIsHoverProduct(false)}>
+        <div className="pt-2.5 py-2.5 pl-1.5">
+        <div className='bg-gray-100 flex flex-col p-4 w-65 h-83 border border-gray-200 cursor-pointer hover:border-gray-300 relative transition-transform duration-300 ease-in-out hover:scale-105' 
+        onMouseEnter={() => setIsHoverProduct(true)} onMouseLeave={() => setIsHoverProduct(false)}>
 
             <div className="relative w-full h-45">
-                <img src={product.img} alt="My Image" className='w-full h-full object-cover' />
+                <img src={product.img} alt="My Image" className='w-full h-full object-cover '/>
 
                 <div className={`absolute top-2 left-2 ${tagBgColor} ${tagTextColor} text-xs font-bold px-2 py-1 rounded`}>
                     {product.tag}
@@ -50,6 +52,7 @@ const ProductCard = ({product}) => {
             ) : (
                 <p className='text-xs text-gray-500 absolute right-6 bottom-6.5'>Stock: 352 pcs</p>
             )}
+        </div>
         </div>
     )
 }

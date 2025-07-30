@@ -21,12 +21,19 @@ const createBanner = async (req, res, next) => {
 const addMainBanner = async (req, res, next) => { //post
     try {
         await new Banner({
-            img: "/img",
+            img: req.body.img,
+            imgPublicId: req.body.imgPublicId,
             tag: req.body.tag,
             title: req.body.title,
             subTitle: req.body.subTitle,
             mode: "main",
-            position: req.body.position
+            position: req.body.position,
+
+            tagColor: req.body.tagColor,
+            titleColor: req.body.titleColor,
+            subTitleColor: req.body.subTitleColor,
+            buttonColor: req.body.buttonColor,
+            buttonHoverColor: req.body.buttonHoverColor,
         }).save();
         return res.status(201).json({ message: "Add main banner successfully" });
 
@@ -38,8 +45,10 @@ const addMainBanner = async (req, res, next) => { //post
 
 const deleteMainBanner = async (req, res, next) => { //delete
     try {
-        if (req.body.mode !== 'main') return res.status(400).json({ message: "You can't delete sub banner" });
-        const currentBanner = await Banner.findOneAndDelete({ _id: req.body._id });
+        const data = req.query;
+
+        if (data.mode !== 'main') return res.status(400).json({ message: "You can't delete sub banner" });
+        const currentBanner = await Banner.findOneAndDelete({ _id: data._id });
         if (!currentBanner) return res.status(404).json({ message: "Banner not found" });
 
         return res.status(200).json({ message: "Delete banner successfully" });
@@ -70,5 +79,16 @@ const updateBanner = async (req, res, next) => { //patch
     }
 };
 
+const getAllBanner = async(req,res,next)=>{ //get
+    try{
+        const allBanner = await Banner.find();
+        return res.status(200).json({banner: allBanner});
 
-export { createBanner, addMainBanner, deleteMainBanner, updateBanner };
+    }catch(error){
+        console.error('Error from /server/controllers/admin/bannerManagement.js at getAllBanner', error);
+        next(error);
+    }
+};
+
+
+export { createBanner, addMainBanner, deleteMainBanner, updateBanner, getAllBanner };

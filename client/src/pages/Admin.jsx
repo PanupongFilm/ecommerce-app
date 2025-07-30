@@ -45,7 +45,7 @@ const Admin = () => {
   return (
     <div className="flex h-screen">
 
-      <aside className="bg-gray-100 w-75 p-6 flex flex-col border border-gray-200 gap-1 ">
+      <aside className="bg-gray-100 w-63 h-full p-6 flex flex-col border border-gray-200 gap-1 fixed">
 
         <div className="flex flex-row items-center gap-1.5 ">
           <img src="/Logo2.png" alt="Logo" className="w-10" />

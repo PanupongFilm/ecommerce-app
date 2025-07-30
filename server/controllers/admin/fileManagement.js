@@ -16,10 +16,15 @@ const uploadToCloud = async (newFilepath) => {
 
 const uploadFileToCloudJpg = async (req, res, next) => {
     try {
+        let data;
 
-        const newFilepath = await compressJpgFile(req.file.path, req.file.filename);
-        await fs.unlink(req.file.path);
-        const data = await uploadToCloud(newFilepath);
+        if (req.body.mode === 'product') {
+            const newFilepath = await compressJpgFile(req.file.path, req.file.filename);
+            await fs.unlink(req.file.path);
+            data = await uploadToCloud(newFilepath);
+        } else {
+            data = await uploadToCloud(req.file.path);
+        }
 
         return res.status(201).json({ message: "Upload file successfully", url: data.secure_url, public_id: data.public_id });
 
@@ -45,7 +50,13 @@ const uploadFileToCloudPng = async (req, res, next) => {
 
 const deleteFileFromCloudPng = async (req, res, next) => {
     try {
-        await cloudinary.uploader.destroy(req.body.public_id);
+
+        const publicId = req.query.public_id;
+        if (!publicId) {
+            return res.status(400).json({ error: "Missing public_id in query" });
+        }
+
+        await cloudinary.uploader.destroy(publicId);
         return res.status(200).json({ message: "Successfully deleted file from cloud" });
 
     } catch (error) {

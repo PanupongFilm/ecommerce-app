@@ -20,7 +20,7 @@ import {
 
 const Dashboard = ({ formatted , data}) => {
   return (
-    <main className="bg-white flex flex-col p-4 w-full -mt-1">
+    <main className="bg-white flex flex-col p-4 w-full -mt-1 ml-63">
 
         <nav className="p-4 flex flex-row justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-700">Overview</h1>

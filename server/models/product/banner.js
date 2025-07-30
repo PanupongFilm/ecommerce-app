@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const bannerSchema = new Schema({
 
     img:{type:String, required: true, trim:true},
+    imgPublicId:{type:String, required: true, trim: true},
     tag:{type:String , default:"" , trim:true},
     title:{type:String,default:"", trim:true},
     subTitle:{type:String,default:"", trim:true},
@@ -16,6 +17,7 @@ const bannerSchema = new Schema({
     titleColor:{type:String, default:"#000000" , trim:true},
     subTitleColor:{type:String, default:"#000000" , trim:true},
     buttonColor:{type:String, default:"#000000" , trim:true},
+    buttonHoverColor:{type:String, default:"#000000", trim:true}
 
 },{timestamps:true});
 

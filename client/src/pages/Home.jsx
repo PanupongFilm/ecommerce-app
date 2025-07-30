@@ -19,6 +19,7 @@ import { FaStar } from "react-icons/fa6";
 
 import CartModal from '../components/CartModal';
 import ProductCard from '../components/ProductCard';
+import axios from 'axios';
 
 
 
@@ -27,6 +28,43 @@ function Home() {
 
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isHoverProduct, setIsHoverProduct] = useState(false);
+
+  const [mainHome1, setMainHome1] = useState([]);
+  const [mainHome2, setMainHome2] = useState([]);
+  const [mainHome3, setMainHome3] = useState([]);
+  const [subHome1, setSubHome1] = useState({});
+  const [subHome2, setSubHome2] = useState({});
+  const [subHome3, setSubHome3] = useState({});
+  const [subHome4, setSubHome4] = useState({});
+  const [subHome5, setSubHome5] = useState({});
+
+
+  useEffect(() => {
+
+    const getAllBanner = async () => {
+      try {
+        const allBanner = await axios.get('http://localhost:4001/admin/banner/get');
+
+        setMainHome1(allBanner.data.banner.filter(banner => banner.position === 'mainHome1'));
+        setMainHome2(allBanner.data.banner.filter(banner => banner.position === 'mainHome2'));
+        setMainHome3(allBanner.data.banner.filter(banner => banner.position === 'mainHome3'));
+
+        setSubHome1(allBanner.data.banner.find(banner => banner.position === 'subHome1'));
+        setSubHome2(allBanner.data.banner.find(banner => banner.position === 'subHome2'));
+        setSubHome3(allBanner.data.banner.find(banner => banner.position === 'subHome3'));
+        setSubHome4(allBanner.data.banner.find(banner => banner.position === 'subHome4'));
+        setSubHome5(allBanner.data.banner.find(banner => banner.position === 'subHome5'));
+
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getAllBanner();
+
+  }, []);
+
 
   return (
     <div>
@@ -47,7 +85,7 @@ function Home() {
           </nav>
 
           {/* Honme Banner */}
-          <div className='flex flex-row justify-start  px-18 py-30 gap-x-7'>
+          <div className='flex flex-row justify-start px-18 py-30 gap-x-7'>
 
             <Swiper
               modules={[Autoplay, Pagination]}
@@ -56,46 +94,32 @@ function Home() {
               pagination={{ clickable: true }}
               className='w-190 h-107'>
 
-              <SwiperSlide>
-                <div className='flex flex-col gap-y-4 justify-center px-8 py-50 h-full'
-                  style={{
-                    backgroundImage: "url('/HealthySet.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}>
 
-                  <p className='text-gray-700 text-xl'>Organic & Healthy</p>
-                  <h1 className='text-teal-700 text-5xl font-bold'>Fruit & Grain</h1>
-                  <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
+              {mainHome1.map((banner, index) => (
 
-                  <button className='flex justify-center items-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
-              hover:bg-teal-800'>
-                    Shop now &gt;&gt;
-                  </button>
-                </div>
-              </SwiperSlide>
+                <SwiperSlide key={index}>
+                  <div className='flex flex-col gap-y-4 justify-center px-8 py-50 h-full '
+                    style={{
+                      backgroundImage: `url(${banner.img})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}>
 
-              <SwiperSlide>
-                <div className='flex flex-col gap-y-4 justify-center px-8 py-50 h-full'
-                  style={{
-                    backgroundImage: "url('/HealthySet2.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}>
+                    <p className='text-xl' style={{ color: banner.tagColor }}>{banner.tag}</p>
+                    <h1 className='text-5xl font-bold' style={{ color: banner.titleColor }}>{banner.title}</h1>
+                    <p className='text-sm w-75 font-semibold' style={{ color: banner.subTitleColor }}>{banner.subTitle}</p>
 
-                  <p className='text-gray-700 text-xl'>Fresh & Healthy</p>
-                  <h1 className='text-teal-700 text-5xl font-bold'>Acai mixed</h1>
-                  <p className='text-sm w-75 font-semibold text-gray-600'>Healthy Meets Delicious.</p>
-
-                  <button className='flex justify-center items-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
-              hover:bg-teal-800'>
-                    Shop now &gt;&gt;
-                  </button>
-                </div>
-              </SwiperSlide>
-
+                    <button className='flex justify-center items-center w-25 py-2 text-sm font-semibold text-white bg-[var(--btn-bg)] hover:bg-[var(--btn-hover)]
+                  'style={{
+                        "--btn-bg": banner.buttonColor,
+                        "--btn-hover": banner.buttonHoverColor
+                      }}>
+                      Shop now &gt;&gt;
+                    </button>
+                  </div>
+                </SwiperSlide>
+              ))};
 
             </Swiper>
 
@@ -105,17 +129,20 @@ function Home() {
 
               <div className='w-95 h-50 bg-red-300 flex flex-col justify-center px-5 gap-y-2'
                 style={{
-                  backgroundImage: "url('/Smoothie.jpg')",
+                  backgroundImage: `url(${subHome1.img})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}>
 
-                <h1 className='text-teal-700 text-2xl font-bold'>Smoothie</h1>
-                <p className='text-xs w-45 font-semibold text-gray-600'>Packed with vitamins, blended with love.</p>
+                <h1 className='text-2xl font-bold' style={{ color: subHome1.titleColor }}>{subHome1.title}</h1>
+                <p className='text-xs w-45 font-semibold' style={{ color: subHome1.subTitleColor }}>{subHome1.subTitle}</p>
 
-                <button className='flex justify-center items-center bg-teal-700 w-22 py-2 text-xs font-semibold text-white
-              hover:bg-teal-800'>
+                <button className='flex justify-center items-center w-22 py-2 text-xs font-semibold text-white bg-[var(--btn-bg)] hover:bg-[var(--btn-hover)]'
+                  style={{
+                    "--btn-bg": subHome1.buttonColor,
+                    "--btn-hover": subHome1.buttonHoverColor
+                  }}>
                   Shop now &gt;&gt;
                 </button>
 
@@ -123,21 +150,26 @@ function Home() {
 
               <div className='w-95 h-50 bg-red-300 flex flex-col justify-center px-5 gap-y-2'
                 style={{
-                  backgroundImage: "url('/Icecream.jpg')",
+                  backgroundImage: `url(${subHome2.img})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}>
 
-                <h1 className='text-teal-700 text-2xl font-bold'>Fruity IceCream</h1>
-                <p className='text-xs w-45 font-semibold text-gray-600'>Packed with vitamins, blended with love.</p>
+                <h1 className='text-2xl font-bold' style={{ color: subHome2.titleColor }}>{subHome2.title}</h1>
+                <p className='text-xs w-45 font-semibold' style={{ color: subHome2.subTitleColor }}>{subHome2.subTitle}</p>
 
-                <button className='flex justify-center items-center bg-teal-700 w-22 py-2 text-xs font-semibold text-white
-              hover:bg-teal-800'>
+                <button className='flex justify-center items-center w-22 py-2 text-xs font-semibold text-white bg-[var(--btn-bg)] hover:bg-[var(--btn-hover)]'
+                  style={{
+                    "--btn-bg": subHome2.buttonColor,
+                    "--btn-hover": subHome2.buttonHoverColor
+                  }}>
                   Shop now &gt;&gt;
                 </button>
 
               </div>
+
+
 
             </div>
 
@@ -267,7 +299,7 @@ function Home() {
                     price: 10
                   }} />
                 </SwiperSlide>
-                  
+
 
 
 
@@ -284,38 +316,40 @@ function Home() {
             <Swiper
               modules={[Autoplay, Pagination]}
               autoplay={{ delay: 3000 }}
-              loop={false}
-              slidesPerView={1}
+              loop={mainHome2 > 1}
               pagination={{ clickable: true }}
               className="w-full h-100"
             >
 
-              <SwiperSlide>
-                <div className='w-full h-100 flex items-center justify-end px-20'
-                  style={{
-                    backgroundImage: "url('/Jelly.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}>
+              {mainHome2.map((banner, index) => (
+                <SwiperSlide key={index}>
+                  <div className='w-full h-100 flex items-center justify-end px-20'
+                    style={{
+                      backgroundImage: `url(${banner.img})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}>
 
-                  <div className='flex flex-col gap-y-5 text-right'>
+                    <div className='flex flex-col gap-y-5 text-right'>
 
-                    <p className='text-green-700 text-xl font-semibold '>New Arrive</p>
-                    <h1 className='text-5xl font-bold text-teal-700 -mt-1'>Jelly Fruity</h1>
-                    <p className='text-sm w-75 font-semibold text-gray-600'>Deliciously blended fruits and whole grains for a healthy, energizing breakfast.</p>
+                      <p className='text-xl font-semibold ' style={{ color: banner.tagColor }}>{banner.tag}</p>
+                      <h1 className='text-5xl font-bold -mt-1' style={{ color: banner.titleColor }}>{banner.title}</h1>
+                      <p className='text-sm w-75 font-semibold' style={{ color: banner.subTitleColor }}>{banner.subTitle}</p>
 
-                    <button className=' self-end flex justify-center fitems-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
-                  hover:bg-teal-800'>
-                      Shop now &gt;&gt;
-                    </button>
+                      <button className=' self-end flex justify-center fitems-center w-25 py-2 text-sm font-semibold text-white bg-[var(--btn-bg)] hover:bg-[var(--btn-hover)]'
+                        style={{
+                          "--btn-bg": banner.buttonColor,
+                          "--btn-hover": banner.buttonHoverColor
+                        }}>
+                        Shop now &gt;&gt;
+                      </button>
 
 
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-
-
+                </SwiperSlide>
+              ))};
             </Swiper>
           </div>
 
@@ -413,46 +447,46 @@ function Home() {
             <Swiper
               modules={[Autoplay, Pagination]}
               autoplay={{ delay: 3000 }}
-              loop={false}
-              slidesPerView={1}
+              loop={mainHome3.length > 1}
               pagination={{ clickable: true }}
               className="w-full h-100"
             >
 
-              <SwiperSlide>
-                <div className='w-full h-100 flex items-center justify-start px-20'
-                  style={{
-                    backgroundImage: "url('/SpecialDeal.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}>
+              {mainHome3.map((banner, index) => (
+                <SwiperSlide key={index}>
+                  <div className='w-full h-100 flex items-center justify-start px-20'
+                    style={{
+                      backgroundImage: `url(${banner.img})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}>
 
-                  <div className='flex flex-col gap-y-5 text-left'>
+                    <div className='flex flex-col gap-y-5 text-left'>
 
+                      <h1 className='text-4xl font-bold -mt-1' style={{ color: banner.titleColor }}>{banner.title}</h1>
+                      <p className='text-sm w-70 font-semibold' style={{ color: banner.subTitleColor }}>{banner.subTitle}</p>
 
-                    <h1 className='text-4xl font-bold text-teal-700 -mt-1'>Special Deal — Up to 30% Off</h1>
-                    <p className='text-sm w-70 font-semibold text-gray-600'>Juicy deals dropping now — grab yours before they are gone!</p>
+                      <button className=' flex justify-center fitems-center w-25 py-2 text-sm font-semibold text-white bg-[var(--btn-bg)] hover:bg-[var(--btn-hover)]'
+                        style={{
+                          "--btn-bg": banner.buttonColor,
+                          "--btn-hover": banner.buttonHoverColor
+                        }}>
+                        Shop now &gt;&gt;
+                      </button>
 
-                    <button className=' flex justify-center fitems-center bg-teal-700 w-25 py-2 text-sm font-semibold text-white
-                                      hover:bg-teal-800'>
-                      Shop now &gt;&gt;
-                    </button>
-
-
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-
+                </SwiperSlide>
+              ))}
 
             </Swiper>
           </div>
 
           <div className='flex flex-row px-18 justify-around  pb-30 -mt-15'>
 
-
             <div style={{
-              backgroundImage: "url('/sale1.jpg')",
+              backgroundImage: `url(${subHome3.img})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -460,13 +494,13 @@ function Home() {
             }} className='w-80 h-100 cursor-pointer flex flex-col items-center gap-1
             transition-transform duration-300 ease-in-out hover:scale-105'>
 
-              <h1 className='text-3xl pt-5 font-semibold text-white'>15% off</h1>
-              <h2 className='text-xl font-semibold text-white'>Bueberry Yogurt</h2>
+              <h1 className='text-3xl pt-5 font-semibold' style={{ color: subHome3.titleColor }}>{subHome3.title}</h1>
+              <h2 className='text-xl font-semibold text-white' style={{ color: subHome3.subTitleColor }}>{subHome3.subTitle}</h2>
 
             </div>
 
             <div style={{
-              backgroundImage: "url('/sale2.jpg')",
+              backgroundImage: `url(${subHome4.img})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -474,13 +508,13 @@ function Home() {
             }} className='w-90 h-110 flex flex-col items-center cursor-pointer gap-1
             transition-transform duration-300 ease-in-out hover:scale-105'>
 
-              <h1 className='text-4xl pt-5 font-semibold text-white'>30% off</h1>
-              <h2 className='text-2xl font-semibold text-white'>Strawberry Yogurt</h2>
+              <h1 className='text-4xl pt-5 font-semibold ' style={{ color: subHome4.titleColor }}>{subHome4.title}</h1>
+              <h2 className='text-2xl font-semibold ' style={{ color: subHome4.subTitleColor }}>{subHome4.subTitle}</h2>
 
             </div>
 
             <div style={{
-              backgroundImage: "url('/sale3.jpg')",
+              backgroundImage: `url(${subHome5.img})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -488,18 +522,14 @@ function Home() {
             }} className='w-80 h-100 cursor-pointer flex flex-col items-center gap-1
             transition-transform duration-300 ease-in-out hover:scale-105'>
 
-              <h1 className='text-3xl pt-5 font-semibold text-white'>15% off</h1>
-              <h2 className='text-xl font-semibold text-white'>Pomegranate Mixed Grain</h2>
+              <h1 className='text-3xl pt-5 font-semibold ' style={{ color: subHome4.titleColor }}>{subHome4.title}</h1>
+              <h2 className='text-xl font-semibold ' style={{ color: subHome4.subTitleColor }}>>{subHome4.subTitle}</h2>
 
             </div>
 
-
-
           </div>
 
-
         </main>
-
 
       </div >
 
