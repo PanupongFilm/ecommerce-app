@@ -32,7 +32,7 @@ export default function AddBannerModal({ isOpen, onClose, position }) {
   };
 
   const handleClick = () => {
-    fileInputRef.current.click(); // คลิก input แบบซ่อนไว้
+    fileInputRef.current.click(); 
   };
 
   const addSubmit = async () => {

@@ -4,6 +4,7 @@ const categorySchema = new Schema({
 
     name:{type:String,required:true,unique:true, trim:true},
     img:{type:String,required: true, default:""},
+    imgPublicId:{type:String, required: true, trim: true},
 
 },{timestamps: true});
 

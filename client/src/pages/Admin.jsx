@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import Dashboard from "../components/admin/Dashboard";
-import BannerEdit from "../components/admin/BannerEdit";
-import Product from "../components/admin/Product";
-import Order from "../components/admin/Order";
+import Dashboard from "../components/admin/Dashboard.jsx";
+import BannerEdit from "../components/admin/BannerEdit.jsx";
+import Product from "../components/admin/Product.jsx";
+import Order from "../components/admin/Order.jsx";
 
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuImagePlus } from "react-icons/lu";
@@ -109,7 +109,7 @@ const Admin = () => {
       
       {activeTab === 'dashboard' && <Dashboard formatted={formatted} data={data}/>}
       {activeTab === 'bannerEdit' && <BannerEdit formatted={formatted}/>}
-      {activeTab === 'product' && <Product formatted={formatted}/>}
+      {activeTab === 'product' && <Product/>}
       {activeTab === 'order' && <Order formatted={formatted}/>}
 
       

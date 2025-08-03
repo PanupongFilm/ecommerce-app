@@ -1,6 +1,6 @@
-import Category from "../../models/product/category";
-import Type from "../../models/product/type";
-import Tag from "../../models/product/tag";
+import Category from "../../models/product/category.js";
+import Type from "../../models/product/type.js";
+import Tag from "../../models/product/tag.js";
 
 const nameValidation = async (nameInput, mode) => {
     try {
@@ -32,11 +32,13 @@ const createCategory = async (req, res, next) => {
     try {
         if (!req.body.name) return res.status(400).json({ message: "Category name is required" });
         const check = await nameValidation(req.body.name, 'category');
+
         if (check) return res.status(409).json({ message: 'Category name is already taken' });
 
         await new Category({
             name: req.body.name,
-            img: req.body.img || ''
+            img: req.body.img,
+            imgPublicId: req.body.imgPublicId
 
         }).save();
 
@@ -48,7 +50,7 @@ const createCategory = async (req, res, next) => {
     }
 }
 
-const DeleteCategory = async (req, res, next) => {
+const deleteCategory = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Category id is required" });
 
@@ -63,7 +65,7 @@ const DeleteCategory = async (req, res, next) => {
     }
 }
 
-const UpdateCategory = async (req, res, next) => {
+const updateCategory = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Category id is required" });
 
@@ -89,6 +91,17 @@ const UpdateCategory = async (req, res, next) => {
     }
 }
 
+const getAllCategories = async(req,res,next)=>{
+    try{
+        const allCategories = await Category.find();
+        return res.status(200).json({message:"Get all categories successfully",categories: allCategories});
+
+    }catch(error){
+        console.error("Error from /server/controllers/admin/categoryManagement.js at getAllCategories: ",error);
+        next(error);
+    }
+}
+
 
 //Type
 const createType = async (req, res, next) => {
@@ -99,7 +112,9 @@ const createType = async (req, res, next) => {
 
         await new Type({
             name: req.body.name,
-            img: req.body.img || ''
+            img: req.body.img,
+            imgPublicId: req.body.imgPublicId,
+            category: req.body.categoryId
 
         }).save();
 
@@ -111,7 +126,7 @@ const createType = async (req, res, next) => {
     }
 }
 
-const DeleteType = async (req, res, next) => {
+const deleteType = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Type id is required" });
 
@@ -126,7 +141,7 @@ const DeleteType = async (req, res, next) => {
     }
 }
 
-const UpdateType = async (req, res, next) => {
+const updateType = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Type id is required" });
 
@@ -152,6 +167,17 @@ const UpdateType = async (req, res, next) => {
     }
 }
 
+const getAllTypes= async(req,res,next)=>{
+    try{
+        const allTypes = await Type.find();
+        return res.status(200).json({message:"Get all types successfully",types: allTypes});
+
+    }catch(error){
+        console.error("Error from /server/controllers/admin/categoryManagement.js at getAllTypes: ",error);
+        next(error);
+    }
+}
+
 
 //Tag
 const createTag = async (req, res, next) => {
@@ -162,7 +188,8 @@ const createTag = async (req, res, next) => {
 
         await new Tag({
             name: req.body.name,
-
+            textColor: req.body.textColor,
+            bgColor: req.body.bgColor
         }).save();
 
         return res.status(201).json({ message: "Create a tag successfully" });
@@ -173,7 +200,7 @@ const createTag = async (req, res, next) => {
     }
 }
 
-const DeleteTag = async (req, res, next) => {
+const deleteTag = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Tag id is required" });
 
@@ -188,10 +215,9 @@ const DeleteTag = async (req, res, next) => {
     }
 }
 
-const UpdateTag = async (req, res, next) => {
+const updateTag = async (req, res, next) => {
     try {
         if (!req.body._id) return res.status(400).json({ message: "Tag id is required" });
-        if (!req.body.name) return res.status(400).json({ message: "New tag name is required" });
 
         const currentTag = await Tag.findById(req.body._id);
         if (!currentTag) return res.status(404).json({ message: "Tag not found" });
@@ -202,6 +228,9 @@ const UpdateTag = async (req, res, next) => {
         }
 
         currentTag.name = req.body.name;
+        currentTag.textColor = req.body.textColor;
+        currentTag.bgColor = req.body.bgColor;
+
         await currentTag.save();
 
         return res.status(200).json({ message: "Update successfully" });
@@ -210,4 +239,21 @@ const UpdateTag = async (req, res, next) => {
         console.error("Error from /server/controllers/admin/categoryManagement.js at UpdateTag: ", error);
         next(error);
     }
+}
+
+const getAllTags= async(req,res,next)=>{
+    try{
+        const allTags = await Tag.find();
+        return res.status(200).json({message:"Get all tags successfully",tags: allTags});
+
+    }catch(error){
+        console.error("Error from /server/controllers/admin/categoryManagement.js at getAllTags: ",error);
+        next(error);
+    }
+}
+
+export {
+    createCategory, deleteCategory, updateCategory, getAllCategories,
+    createType, deleteType, updateType, getAllTypes,
+    createTag, deleteTag, updateTag, getAllTags
 }

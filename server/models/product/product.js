@@ -5,7 +5,8 @@ const productSchema = new Schema({
     name: { type: String, required: true, trim: true },
     price: { type: Number, required: true, min: 0 },
     description: { type: String, default: "Please enter the description" },
-    imgs: { type: [String], default: [""] },
+    imgs: { type: [String], default: [] },
+    imgPublicId: {type:[String], default: []},
     stock: { type: Number, required: true, default: 1, min: 0 },
     isStock: { type: Boolean, default: true },
 

@@ -23,7 +23,7 @@ const ProductCard = ({product}) => {
 
     return (
         <div className="pt-2.5 py-2.5 pl-1.5">
-        <div className='bg-gray-100 flex flex-col p-4 w-65 h-83 border border-gray-200 cursor-pointer hover:border-gray-300 relative transition-transform duration-300 ease-in-out hover:scale-105' 
+        <div className='bg-white shadow-sm flex flex-col p-4 w-65 h-83 border border-gray-200 cursor-pointer hover:border-gray-300 relative transition-transform duration-300 ease-in-out hover:scale-105' 
         onMouseEnter={() => setIsHoverProduct(true)} onMouseLeave={() => setIsHoverProduct(false)}>
 
             <div className="relative w-full h-45">
