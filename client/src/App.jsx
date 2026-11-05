@@ -4,16 +4,16 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AccountSetup from './pages/AccountSetup.jsx';
 import Verifying from './pages/Verifying.jsx';
-import ForgotPassword from './pages/forgotPassword.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import Admin from './pages/Admin.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google'; 
-import './app.css';
+import './App.css';
 
 
 
 
-const clientId = "423442034307-khffpm38c25m6spi9fmmm6tboe352qml.apps.googleusercontent.com";
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function App() {
   return (
